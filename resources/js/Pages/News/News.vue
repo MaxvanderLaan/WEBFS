@@ -13,6 +13,6 @@ const form = ref({
 
 <template>
     <Base>
-        <Head title="Contact" />
+        <Head title="News" />
     </Base>
 </template>

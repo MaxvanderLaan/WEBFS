@@ -12,6 +12,8 @@ Route::get('/', function () {
     ]);
 });
 
+Route::get('/menu', [ContactController::class, 'index'])->name('menu');
+Route::get('/news', [ContactController::class, 'index'])->name('news');
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 
 Route::get('/dashboard', function () {
