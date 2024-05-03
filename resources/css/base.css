@@ -16,3 +16,25 @@
 .menu-button:hover {
     background: rgb(0,102,255);
 }
+
+.main-text {
+    color: yellow;
+    font-size: 50px;
+    font-weight: bold;
+}
+
+.main-text-sub {
+    color: yellow;
+    font-size: 40px;
+    font-weight: bold;
+}
+
+.big-dragon {
+    height: 180px;
+    width: 180px;
+}
+
+
+.big-dragon.inverted {
+    transform: scaleX(-1);
+}
