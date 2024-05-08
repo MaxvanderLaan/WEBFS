@@ -3,10 +3,11 @@
 
 <template>
     <div class="w-screen h-screen bg-red-900 flex items-center justify-center">
-        <table id="main_table" class="main-table">
-            <tr class="row-style row-height-7">
-                <td colspan="9"></td>
-            </tr>
+    <table id="main_table" style="padding:5px;border-collapse: collapse">
+			<tr style="height:7px;background-color:red">
+				<td colspan="9">
+				</td>
+			</tr>
 			<tr style="height:25px;background-color:red">
 				<td width="7px">
 				</td>
