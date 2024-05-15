@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class MenuSale extends Model
@@ -14,14 +15,14 @@ class MenuSale extends Model
         'amount',
     ];
 
-    public function sale(): HasOne
+    public function sale(): BelongsTo
     {
-        return $this->hasOne(Sale::class);
+        return $this->belongsTo(Sale::class);
     }
 
-    public function menu(): HasOne
+    public function menu(): BelongsTo
     {
-        return $this->hasOne(Menu::class);
+        return $this->belongsTo(Menu::class);
     }
 
     protected function casts(): array

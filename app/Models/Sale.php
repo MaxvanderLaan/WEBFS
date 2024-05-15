@@ -15,7 +15,7 @@ class Sale extends Model
         'description'
     ];
 
-    public function MenuSales(): HasMany
+    public function menuSales(): HasMany
     {
         return $this->hasMany(MenuSale::class);
     }
