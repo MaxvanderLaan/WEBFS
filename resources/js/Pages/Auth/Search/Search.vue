@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { defineProps, reactive, ref, computed, defineExpose } from 'vue';
 import BackOffice from '@/Layouts/AuthenticatedLayout.vue';
-import { Head, Link, useForm } from '@inertiajs/vue3';
+import { useForm } from '@inertiajs/vue3';
 
 interface MealAddition {
     id: number;
@@ -111,33 +111,9 @@ function roundToNearestFiveCents(number: number) {
     return finalNumber / (factor * 10);
 }
 
-// Fetch the CSRF token from the meta tag
-const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
-
 const sendOrder = () => {
-    fetch(route('register.order'), {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': csrfToken as string
-        },
-        body: JSON.stringify({ menuSales })
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.json();
-    })
-    .then(data => {
-        state.successMessage = 'Order sent successfully';
-        menuSales.splice(0, menuSales.length); // Clear the menuSales array
-    })
-    .catch(error => {
-        state.errorMessage = 'Failed to send order';
-        console.error('There was a problem with the fetch operation:', error);
-    });
-};
+
+}
 
 defineExpose({ menus: state.menus, query, amounts, search, groupedMenus, updateAmount, addSale, menuSales, total, deleteSale, sendOrder });
 </script>
@@ -207,7 +183,9 @@ defineExpose({ menus: state.menus, query, amounts, search, groupedMenus, updateA
                             <td class="border w-1/6 px-4 py-2">{{ sale.menuId }}</td>
                             <td class="border w-1/6 px-4 py-2">{{ menus && menus.find(menu => menu.id === sale.menuId)?.name }}</td>
                             <td class="border w-1/6 px-4 py-2">{{ menus && menus.find(menu => menu.id === sale.menuId)?.price }}</td>
-                            <td class="border w-1/6 px-4 py-2">{{ sale.remark }}</td>
+                            <td class="border w-1/6 px-4 py-2">
+                                <input type="text" v-model="sale.remark" class="p-1 border-2 border-gray-300 rounded-md focus:outline-none focus:border-blue-500" />
+                            </td>
                             <td class="border w-1/6 px-4 py-2">{{ sale.amount }}</td>
                             <td class="border w-1/6 px-4 py-2">
                                 <button @click="deleteSale(sale)" class="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-700">Remove</button>
