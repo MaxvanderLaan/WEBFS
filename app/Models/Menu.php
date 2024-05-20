@@ -4,8 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Menu extends Model
 {
@@ -24,9 +24,19 @@ class Menu extends Model
         return $this->hasMany(MenuSale::class);
     }
 
-    public function mealTypes(): HasOne
+    public function mealTypes(): BelongsTo
     {
-        return $this->hasOne(MealType::class);
+        return $this->belongsTo(MealType::class);
+    }
+
+    public function priceHistories(): HasMany
+    {
+        return $this->hasMany(MenuPriceHistory::class);
+    }
+
+    public function menuOffers(): HasMany
+    {
+        return $this->hasMany(MenuOffer::class);
     }
 
     protected function casts(): array
