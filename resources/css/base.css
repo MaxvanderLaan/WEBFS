@@ -1,0 +1,108 @@
+.base-red {
+    background-color: red;
+}
+
+.menu-button {
+    padding: 5px 0px 5px 0px;
+    background: linear-gradient(to bottom, rgb(222,235,247), rgb(0,102,255));
+    font-weight: bold;
+    font-size: 18px;
+    width: 180px;
+    border: 1px solid rgb(0,102,255);
+    display: inline-block;
+    text-align: center;
+}
+
+.menu-button:hover {
+    background: rgb(0,102,255);
+}
+
+.main-text {
+    color: yellow;
+    font-size: 50px;
+    font-weight: bold;
+}
+
+.main-text-sub {
+    color: yellow;
+    font-size: 40px;
+    font-weight: bold;
+}
+
+.big-dragon {
+    height: 180px;
+    width: 180px;
+}
+
+
+.big-dragon.inverted {
+    transform: scaleX(-1);
+}
+
+.small-dragon {
+    height: 60px;
+    width: 60px;
+    margin: 3px;
+}
+
+.small-dragon.inverted {
+    transform: scaleX(-1);
+}
+
+.chinese-text {
+    font-family: 'chinese-font', sans-serif;
+    font-size: 30px;
+    color: yellow;
+}
+
+@font-face {
+    font-family: 'chinese-font';
+    src: url('/resources/fonts/chinesetakeaway-webfont.woff2') format('woff2'),
+         url('/resources/fonts/chinesetakeaway-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.scroll-container {
+    flex: 1;
+    align-items: center;
+    overflow: hidden;
+}
+  
+.scroll-text {
+    color: yellow;
+    white-space: nowrap;
+
+    -moz-transform: translateX(100%);
+    -webkit-transform: translateX(100%);
+    transform: translateX(100%);
+    
+    -moz-animation: my-animation 15s linear infinite;
+    -webkit-animation: my-animation 15s linear infinite;
+    animation: my-animation 15s linear infinite;
+}
+  
+/* for Firefox */
+@-moz-keyframes my-animation {
+    from { -moz-transform: translateX(100%); }
+    to { -moz-transform: translateX(-100%); }
+}
+  
+/* for Chrome */
+@-webkit-keyframes my-animation {
+    from { -webkit-transform: translateX(100%); }
+    to { -webkit-transform: translateX(-100%); }
+}
+  
+@keyframes my-animation {
+    from {
+        -moz-transform: translateX(100%);
+        -webkit-transform: translateX(100%);
+        transform: translateX(100%);
+    }
+    to {
+        -moz-transform: translateX(-100%);
+        -webkit-transform: translateX(-100%);
+        transform: translateX(-100%);
+    }
+}
