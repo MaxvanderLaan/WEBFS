@@ -52,24 +52,22 @@ class RegisterOrderController extends Controller{
             $sale = Sale::create([
                 'description' => '',
             ]);
-    
+
             foreach ($data['menuSales'] as $menuSalesData) {
-                $menuSale = MenuSale::create([
-                    'sale_id' => $sale->id,
-                    'menu_id' => $menuSalesData['menuId'],
-                    'amount' => $menuSalesData['amount'],
-                    'remark' => $menuSalesData['remark'],
-                ]);
-    
-                if (isset($menuSalesData['mealAdditionId'])) {
-                    $mealAddition = MealAddition::find($menuSalesData['mealAdditionId']);
-                    $menuSale->mealAddition()->save($mealAddition);
-                }
+                Log::info('Creating MenuSale with sale_id: ', ['sale_id' => $sale->id]);
+            
+                $menuSale = new MenuSale();
+                $menuSale->sale_id = $sale->id;
+                $menuSale->menu_id = $menuSalesData['menuId'];
+                $menuSale->amount = $menuSalesData['amount'];
+                $menuSale->remark = $menuSalesData['remark'];
+                $menuSale->meal_addition_id = $menuSalesData['mealAdditionId'];
+                $menuSale->save();
             }
     
-            return response()->json(['message' => 'Order created successfully'], 201);
+            return back()->with('success', 'Order created successfully');
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Failed to create order: ' . $e->getMessage()], 500);
+            return back()->with('error', 'Failed to create order: ' . $e->getMessage());
         }
     }
 }

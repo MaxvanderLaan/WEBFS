@@ -111,21 +111,43 @@ function roundToNearestFiveCents(number: number) {
     return finalNumber / (factor * 10);
 }
 
-const sendOrder = () => {
+const form = useForm({
+    menuSales: [] as MenuSale[],
+});
 
-}
+const sendOrder = () => {
+    form.menuSales = [...menuSales];
+    form.post('/register/order', {
+        preserveScroll: true,
+        onSuccess: (response) => {
+            state.successMessage = 'Order created successfully';
+            menuSales.splice(0);
+            setTimeout(() => {
+                state.successMessage = '';
+            }, 10000);
+        },
+        onError: (error) => {
+            state.errorMessage = error.message;
+            setTimeout(() => {
+                state.errorMessage = '';
+            }, 10000);
+        },
+    });
+};
 
 defineExpose({ menus: state.menus, query, amounts, search, groupedMenus, updateAmount, addSale, menuSales, total, deleteSale, sendOrder });
 </script>
 
 <template>
     <BackOffice>
-        <div v-if="state.successMessage" class="alert alert-success">
-            {{ state.successMessage }}
+        <div v-if="state.successMessage" class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+            <strong class="font-bold">Success!</strong>
+            <span class="block sm:inline">{{ state.successMessage }}</span>
         </div>
 
-        <div v-if="state.errorMessage" class="alert alert-danger">
-            {{ state.errorMessage }}
+        <div v-if="state.errorMessage" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+            <strong class="font-bold">Error!</strong>
+            <span class="block sm:inline">{{ state.errorMessage }}</span>
         </div>
 
         <div class="flex justify-center mt-10">
@@ -180,14 +202,21 @@ defineExpose({ menus: state.menus, query, amounts, search, groupedMenus, updateA
                     </thead>
                     <tbody>
                         <tr v-for="sale in menuSales" :key="sale.menuId">
-                            <td class="border w-1/6 px-4 py-2">{{ sale.menuId }}</td>
+                            <td class="border w-1/12 px-4 py-2">{{ sale.menuId }}</td>
                             <td class="border w-1/6 px-4 py-2">{{ menus && menus.find(menu => menu.id === sale.menuId)?.name }}</td>
                             <td class="border w-1/6 px-4 py-2">{{ menus && menus.find(menu => menu.id === sale.menuId)?.price }}</td>
                             <td class="border w-1/6 px-4 py-2">
                                 <input type="text" v-model="sale.remark" class="p-1 border-2 border-gray-300 rounded-md focus:outline-none focus:border-blue-500" />
                             </td>
-                            <td class="border w-1/6 px-4 py-2">{{ sale.amount }}</td>
                             <td class="border w-1/6 px-4 py-2">
+                                <select v-model="sale.mealAdditionId" class="w-full p-1 border-2 border-gray-300 rounded-md focus:outline-none focus:border-blue-500">
+                                    <option v-for="mealAddition in state.mealAdditions" :key="mealAddition.id" :value="mealAddition.id">
+                                        {{ mealAddition.name }}
+                                    </option>
+                                </select>
+                            </td>
+                            <td class="border w-1/6 px-4 py-2">{{ sale.amount }}</td>
+                            <td class="border w-1/12 px-4 py-2">
                                 <button @click="deleteSale(sale)" class="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-700">Remove</button>
                             </td>
                         </tr>
