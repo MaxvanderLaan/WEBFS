@@ -21,12 +21,12 @@ class RegisterOrderController extends Controller{
         $query = $request->get('query');
     
         $menus = Menu::with('mealType')
-        ->where('name', 'LIKE', "%{$query}%")
-        ->orWhere('id', $query)
-        ->orWhereHas('mealType', function ($q) use ($query) {
-            $q->where('type', 'LIKE', "%{$query}%");
-        })
-        ->get();
+            ->where('name', 'LIKE', "%{$query}%")
+            ->orWhere('number', $query)
+            ->orWhereHas('mealType', function ($q) use ($query) {
+                $q->where('type', 'LIKE', "%{$query}%");
+            })
+            ->get();
 
         return response()->json($menus);
     }
