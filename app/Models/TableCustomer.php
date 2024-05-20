@@ -6,30 +6,24 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class MenuSale extends Model
+class TableCustomer extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'amount',
-        'remark',
+        'deluxe',
     ];
 
-    public function sale(): BelongsTo
+    public function customer(): BelongsTo
     {
-        return $this->belongsTo(Sale::class);
+        return $this->belongsTo(Customer::class);
     }
 
-    public function menu(): BelongsTo
+    public function table(): BelongsTo
     {
-        return $this->belongsTo(Menu::class);
-    }
-
-    public function mealAddition(): HasOne 
-    {
-        return $this->hasOne(MealAddition::class);
+        return $this->belongsTo(Table::class);
     }
 
     public function tableCustomerMenuSales(): BelongsToMany
@@ -40,8 +34,7 @@ class MenuSale extends Model
     protected function casts(): array
     {
         return [
-            'amount' => 'integer',
-            'remark' => 'string',
+            'deluxe' => 'boolean',
         ];
     }
 }

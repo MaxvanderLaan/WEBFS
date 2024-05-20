@@ -6,23 +6,25 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class MealType extends Model
+class Customer extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'type',
+        'name',
+        'birthday',
     ];
 
-    public function menus(): HasMany
+    public function tableCustomers(): HasMany
     {
-        return $this->hasMany(Menu::class);
+        return $this->hasMany(TableCustomer::class);
     }
 
     protected function casts(): array
     {
         return [
-            'type' => 'string',
+            'name' => 'string',
+            'birthday' => 'date',
         ];
     }
 }
