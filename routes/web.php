@@ -28,6 +28,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/search', [RegisterOrderController::class, 'index'])->name('search');
     Route::get('/search/menu', [RegisterOrderController::class, 'search'])->name('search.menu');
+
+    Route::post('/register/order', [RegisterOrderController::class, 'store'])->name('register.order');
 });
 
 require __DIR__.'/auth.php';
