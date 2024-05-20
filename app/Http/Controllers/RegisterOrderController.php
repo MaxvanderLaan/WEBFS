@@ -10,8 +10,7 @@ class RegisterOrderController extends Controller{
 
     public function index()
     {
-        $menus = Menu::with('mealTypes')->get();
-
+        $menus = Menu::with('mealType')->get();
         return Inertia::render('Auth/Search/Search', [
             'menus' => $menus
         ]);
@@ -20,14 +19,14 @@ class RegisterOrderController extends Controller{
     public function search(Request $request)
     {
         $query = $request->get('query');
-
-        $menus = Menu::with('mealTypes')
-            ->where('name', 'LIKE', "%{$query}%")
-            ->orWhere('id', $query)
-            ->orWhereHas('mealTypes', function ($q) use ($query) {
-                $q->where('type', 'LIKE', "%{$query}%");
-            })
-            ->get();
+    
+        $menus = Menu::with('mealType')
+        ->where('name', 'LIKE', "%{$query}%")
+        ->orWhere('id', $query)
+        ->orWhereHas('mealType', function ($q) use ($query) {
+            $q->where('type', 'LIKE', "%{$query}%");
+        })
+        ->get();
 
         return response()->json($menus);
     }
