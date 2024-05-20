@@ -40,10 +40,10 @@ defineExpose({ asset });
                     <div class="flex flex-col">
                         <div class="text-center text-xl">
                             <div class="main-text-sub m-4">
-                                Chinees Indische Specialiteiten
+                                {{ $t('messages.Chinese Indonesian Specialties') }}
                             </div>
                             <div class="main-text m-4">
-                                De Gouden Draak
+                            {{ $t('messages.The Golden Dragon') }}
                             </div>
                         </div>
                         <nav>

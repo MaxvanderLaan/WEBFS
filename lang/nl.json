@@ -1,0 +1,12 @@
+{
+    "user.name": "Naam",
+    "user.email": "Email",
+    "user.password": "Wachtwoord",
+    "user.password.confirm": "Bevestig Wachtwoord",
+ 
+    "register.submit": "Registreer",
+    "register.hasAccount": "Al Registreert?",
+
+    "messages.Chinese Indonesian Specialties": "Chinees Indische Specialiteiten",
+    "messages.The Golden Dragon": "De Gouden Draak"
+}

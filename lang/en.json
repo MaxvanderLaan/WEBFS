@@ -1,0 +1,12 @@
+{
+    "user.name": "Name",
+    "user.email": "Email",
+    "user.password": "Password",
+    "user.password.confirm": "Confirm Password",
+ 
+    "register.submit": "Register",
+    "register.hasAccount": "Already registered?",
+
+    "messages.Chinese Indonesian Specialties": "Chinese Indonesian Specialties",
+    "messages.The Golden Dragon": "The Golden Dragon"
+}
