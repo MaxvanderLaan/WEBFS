@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { defineProps, reactive, ref, computed, defineExpose } from 'vue';
 import BackOffice from '@/Layouts/AuthenticatedLayout.vue';
+import { useForm } from '@inertiajs/vue3';
 
 interface MealAddition {
     id: number;
@@ -26,15 +27,20 @@ interface MenuSale {
     menuId: number;
     amount: number;
     price: number;
+    mealAdditionId: number;
     remark: string;
 }
 
 const props = defineProps({
-    menus: Array as () => Menu[]
+    menus: Array as () => Menu[],
+    mealAdditions: Array as () => MealAddition[],
 });
 
 const state = reactive({
-    menus: props.menus || []
+    menus: props.menus || [],
+    mealAdditions: props.mealAdditions || [],
+    successMessage: '',
+    errorMessage: '',
 });
 
 const query = ref('');
@@ -52,7 +58,8 @@ const menuSales = reactive<MenuSale[]>([]);
 const addSale = (menu: Menu) => {
     const amount = amounts.get(menu.id)?.value || 1;
     const remark = '';
-    menuSales.push({ menuId: menu.id, amount, price: menu.price, remark });
+    const mealAdditionId = state.mealAdditions[0].id;
+    menuSales.push({ menuId: menu.id, amount, price: menu.price, mealAdditionId, remark });
     amounts.delete(menu.id);
 }
 const deleteSale = (sale: MenuSale) => {
@@ -104,11 +111,45 @@ function roundToNearestFiveCents(number: number) {
     return finalNumber / (factor * 10);
 }
 
-defineExpose({ menus: state.menus, query, amounts, search, groupedMenus, updateAmount, addSale, menuSales, total, deleteSale });
+const form = useForm({
+    menuSales: [] as MenuSale[],
+});
+
+const sendOrder = () => {
+    form.menuSales = [...menuSales];
+    form.post('/register/order', {
+        preserveScroll: true,
+        onSuccess: (response) => {
+            state.successMessage = 'Order created successfully';
+            menuSales.splice(0);
+            setTimeout(() => {
+                state.successMessage = '';
+            }, 10000);
+        },
+        onError: (error) => {
+            state.errorMessage = error.message;
+            setTimeout(() => {
+                state.errorMessage = '';
+            }, 10000);
+        },
+    });
+};
+
+defineExpose({ menus: state.menus, query, amounts, search, groupedMenus, updateAmount, addSale, menuSales, total, deleteSale, sendOrder });
 </script>
 
 <template>
     <BackOffice>
+        <div v-if="state.successMessage" class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+            <strong class="font-bold">Success!</strong>
+            <span class="block sm:inline">{{ state.successMessage }}</span>
+        </div>
+
+        <div v-if="state.errorMessage" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+            <strong class="font-bold">Error!</strong>
+            <span class="block sm:inline">{{ state.errorMessage }}</span>
+        </div>
+
         <div class="flex justify-center mt-10">
             <input v-model="query" @input="search" placeholder="Search..." class="p-2 border-2 border-gray-300 rounded-md focus:outline-none focus:border-blue-500" />
         </div>
@@ -125,7 +166,7 @@ defineExpose({ menus: state.menus, query, amounts, search, groupedMenus, updateA
                                 <th class="text-left px-4 py-2">Addition</th>
                                 <th class="text-left px-4 py-2">Price</th>
                                 <th class="text-left px-4 py-2">Amount</th>
-                                <th class="text-left px-4 py-2">Add Sale</th>
+                                <th class="text-left px-4 py-2">Add</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -161,21 +202,31 @@ defineExpose({ menus: state.menus, query, amounts, search, groupedMenus, updateA
                     </thead>
                     <tbody>
                         <tr v-for="sale in menuSales" :key="sale.menuId">
-                            <td class="border w-1/6 px-4 py-2">{{ sale.menuId }}</td>
+                            <td class="border w-1/12 px-4 py-2">{{ sale.menuId }}</td>
                             <td class="border w-1/6 px-4 py-2">{{ menus && menus.find(menu => menu.id === sale.menuId)?.name }}</td>
                             <td class="border w-1/6 px-4 py-2">{{ menus && menus.find(menu => menu.id === sale.menuId)?.price }}</td>
                             <td class="border w-1/6 px-4 py-2">
                                 <input type="text" v-model="sale.remark" class="p-1 border-2 border-gray-300 rounded-md focus:outline-none focus:border-blue-500" />
                             </td>
-                            <td class="border w-1/6 px-4 py-2">{{ sale.amount }}</td>
                             <td class="border w-1/6 px-4 py-2">
-                                <button @click="deleteSale(sale)" class="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-700">Delete</button>
+                                <select v-model="sale.mealAdditionId" class="w-full p-1 border-2 border-gray-300 rounded-md focus:outline-none focus:border-blue-500">
+                                    <option v-for="mealAddition in state.mealAdditions" :key="mealAddition.id" :value="mealAddition.id">
+                                        {{ mealAddition.name }}
+                                    </option>
+                                </select>
+                            </td>
+                            <td class="border w-1/6 px-4 py-2">{{ sale.amount }}</td>
+                            <td class="border w-1/12 px-4 py-2">
+                                <button @click="deleteSale(sale)" class="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-700">Remove</button>
                             </td>
                         </tr>
                     </tbody>
                 </table>
-                <div class="text-center text-xl font-bold mb-2">
+                <div class="text-center text-xl mt-5">
                     Total: €{{ roundToNearestFiveCents(total).toFixed(2) }}
+                </div>
+                <div class="text-center mt-5">
+                    <button @click="sendOrder" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-700">Send Order</button>
                 </div>
             </div>
         </div>
