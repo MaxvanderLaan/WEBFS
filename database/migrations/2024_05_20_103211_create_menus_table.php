@@ -15,11 +15,11 @@ class CreateMenusTable extends Migration
     {
         Schema::create('menus', function (Blueprint $table) {
             $table->id();
-            $table->integer('number');
-            $table->string('addition');
+            $table->integer('number')->nullable();
+            $table->string('addition')->nullable();
             $table->string('name');
             $table->decimal('price', 8, 2);
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->foreignId('meal_type_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
