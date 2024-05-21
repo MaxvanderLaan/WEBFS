@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ChangeMenuController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterOrderController;
@@ -27,10 +28,14 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get('/search', [RegisterOrderController::class, 'index'])->name('search');
-    Route::get('/search/menu', [RegisterOrderController::class, 'search'])->name('search.menu');
+    Route::get('/register/menu', [RegisterOrderController::class, 'index'])->name('register.menu');
+    Route::get('/register/menu/search', [RegisterOrderController::class, 'search'])->name('search.menu.search');
+    Route::post('/register/menu/order', [RegisterOrderController::class, 'store'])->name('register.menu.order');
 
-    Route::post('/register/order', [RegisterOrderController::class, 'store'])->name('register.order');
+    Route::get('/change/menu', [ChangeMenuController::class, 'index'])->name('change.menu');
+    Route::get('/change/menu/search', [ChangeMenuController::class, 'search'])->name('change.menu.search');
+    Route::get('/change/menu/edit/{id}', [ChangeMenuController::class, 'edit'])->name('change.menu.edit');
+    Route::put('/change/menu/update', [ChangeMenuController::class, 'update'])->name('change.menu.update');
 });
 
 Route::get('/locale/{locale}', function ($locale) {
