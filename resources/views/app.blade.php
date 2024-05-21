@@ -14,6 +14,14 @@
         @routes
         @vite(['resources/js/app.ts', "resources/js/Pages/{$page['component']}.vue"])
         @inertiaHead
+        
+        <!-- Add localeUrls object -->
+        <script>
+            window.localeUrls = {
+                en: "{{ route('locale.switch', 'en') }}",
+                nl: "{{ route('locale.switch', 'nl') }}"
+            };
+        </script>
     </head>
     <body class="font-sans antialiased">
         @inertia

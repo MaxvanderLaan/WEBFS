@@ -2,6 +2,7 @@
 import { Link } from '@inertiajs/vue3';
 import Border from '@/Layouts/Border.vue';
 import Footer from '@/Components/Footer.vue';
+import LocaleSwitcher from '@/Components/LocaleSwitcher.vue';
 import { defineExpose } from 'vue';
 
 const asset = (path: any) => `${import.meta.env.VITE_APP_URL}/storage/${path}`;
@@ -12,25 +13,26 @@ defineExpose({ asset });
 <template>
 	<Border>
 		<div class="base-red">
+        <LocaleSwitcher />
 			<div class="flex justify-between">
                 <div class="flex items-center">
                     <img :src="asset('pictures/dragon-small.png')" alt="Dragon" class="small-dragon">
                     <div class="chinese-text">
-                        De Gouden Draak
+                        {{ $t('messages.The Golden Dragon') }}
                     </div>
                         <img :src="asset('pictures/dragon-small.png')" alt="Dragon" class="small-dragon inverted">
                     </div>
 
                     <div class="scroll-container flex">
                         <div class="scroll-text">
-                            Welkom bij De Gouden draak. Klik op deze tekst om de aanbiedingen van deze week te zien!
+                       {{ $t('messages.Welcome to The Golden Dragon. Click on this text to see this week\'s specials!') }}
                         </div>
                     </div>
 
                     <div class="flex items-center">
                         <img :src="asset('pictures/dragon-small.png')" alt="Dragon" class="small-dragon">
                         <div class="chinese-text">
-                            De Gouden Draak
+                           {{ $t('messages.The Golden Dragon') }}
                         </div>
                         <img :src="asset('pictures/dragon-small.png')" alt="Dragon" class="small-dragon inverted">
                     </div>
@@ -51,17 +53,17 @@ defineExpose({ asset });
                                 <Link class="menu-button"
                                 :href="route('menu')"
                                 >
-                                Menukaart
+                                {{ $t('messages.Menu') }}
                                 </Link>
                                 <Link class="menu-button"
                                     :href="route('news')"
                                     >
-                                    Nieuws
+                                    {{ $t('messages.News') }}
                                 </Link>
                                 <Link class="menu-button"
                                     :href="route('contact')"
                                     >
-                                    Contact
+                                    {{ $t('messages.Contact') }}
                                 </Link>
                             </div>
                         </nav>

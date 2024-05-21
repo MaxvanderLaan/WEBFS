@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterOrderController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Session;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -31,5 +32,15 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/register/order', [RegisterOrderController::class, 'store'])->name('register.order');
 });
+
+Route::get('/locale/{locale}', function ($locale) {
+    if (!in_array($locale, ['en', 'nl'])) {
+        abort(400, 'Invalid locale');
+    }
+
+    Session::put('locale', $locale);
+
+    return redirect()->back();
+})->name('locale.switch');
 
 require __DIR__.'/auth.php';
