@@ -144,8 +144,10 @@ const showingNavigationDropdown = ref(false);
             </header>
 
             <!-- Page Content -->
-            <main>
-                <slot />
+            <main class="flex justify-center items-center">
+                <div class="w-11/12">
+                    <slot />
+                </div>
             </main>
         </div>
     </div>

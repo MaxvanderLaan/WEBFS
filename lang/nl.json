@@ -1,0 +1,16 @@
+{
+    "user.name": "Naam",
+    "user.email": "Email",
+    "user.password": "Wachtwoord",
+    "user.password.confirm": "Bevestig Wachtwoord",
+ 
+    "register.submit": "Registreer",
+    "register.hasAccount": "Al Registreert?",
+
+    "messages.Chinese Indonesian Specialties": "Chinees Indische Specialiteiten",
+    "messages.The Golden Dragon": "De Gouden Draak",
+    "messages.Welcome to The Golden Dragon. Click on this text to see this week's specials!": "Welkom bij De Gouden draak. Klik op deze tekst om de aanbiedingen van deze week te zien!",
+    "messages.Menu": "Menukaart",
+    "messages.News": "Nieuws",
+    "messages.Contact": "Contact"
+}
