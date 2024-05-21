@@ -4,6 +4,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Session;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -25,5 +26,15 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+Route::get('/locale/{locale}', function ($locale) {
+    if (!in_array($locale, ['en', 'nl'])) {
+        abort(400, 'Invalid locale');
+    }
+
+    Session::put('locale', $locale);
+
+    return redirect()->back();
+})->name('locale.switch');
 
 require __DIR__.'/auth.php';
