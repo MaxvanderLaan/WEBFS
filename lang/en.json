@@ -1,0 +1,16 @@
+{
+    "user.name": "Name",
+    "user.email": "Email",
+    "user.password": "Password",
+    "user.password.confirm": "Confirm Password",
+ 
+    "register.submit": "Register",
+    "register.hasAccount": "Already registered?",
+
+    "messages.Chinese Indonesian Specialties": "Chinese Indonesian Specialties",
+    "messages.The Golden Dragon": "The Golden Dragon",
+    "messages.Welcome to The Golden Dragon. Click on this text to see this week's specials!": "Welcome to The Golden Dragon. Click on this text to see this week's specials!",
+    "messages.Menu": "Menu",
+    "messages.News": "News",
+    "messages.Contact": "Contact"
+}

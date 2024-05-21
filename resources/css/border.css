@@ -1,0 +1,45 @@
+border-height-25 {
+    height: 25px;
+}
+
+border-height-50 {
+    height: 50px;
+}
+
+border-width-7 {
+    width: 7px;
+}
+
+border-width-25 {
+    width: 25px;
+}
+
+border-left {
+    border-left: 4px;
+    color: solid yellow;
+}
+
+border-right {
+    border-right: 4px;
+    color: solid yellow;
+}
+
+border-top {
+    border-top: 4px;
+    color: solid yellow;
+}
+
+border-bottom {
+    border-bottom: 4px;
+    color: solid yellow;
+}
+
+border-tr-7 {
+    height: 7px;
+    background-color: red;
+}
+
+border-tr-25 {
+    height: 25px;
+    background-color: red;
+}
