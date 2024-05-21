@@ -24,7 +24,7 @@ class Menu extends Model
         return $this->hasMany(MenuSale::class);
     }
 
-    public function mealTypes(): BelongsTo
+    public function mealType(): BelongsTo
     {
         return $this->belongsTo(MealType::class);
     }
