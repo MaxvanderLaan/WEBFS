@@ -31,6 +31,27 @@ interface MenuSale {
     remark: string;
 }
 
+const successMessage = ref<string | null>(null);
+const errorMessage = ref<string | null>(null);
+
+const displaySuccessMessage = () => {
+  successMessage.value = 'Successfully created order!';
+  errorMessage.value = null;
+
+  setTimeout(() => {
+    successMessage.value = null;
+  }, 10000);
+};
+
+const displayErrorMessage = () => {
+  successMessage.value = null;
+  errorMessage.value = 'Failed to create order!';
+
+  setTimeout(() => {
+    errorMessage.value = null;
+  }, 10000);
+};
+
 const props = defineProps({
     menus: Array as () => Menu[],
     mealAdditions: Array as () => MealAddition[],
@@ -39,8 +60,6 @@ const props = defineProps({
 const state = reactive({
     menus: props.menus || [],
     mealAdditions: props.mealAdditions || [],
-    successMessage: '',
-    errorMessage: '',
 });
 
 const query = ref('');
@@ -70,7 +89,7 @@ const deleteSale = (sale: MenuSale) => {
 }
 
 const search = () => {
-    fetch(`/search/menu?query=${query.value}`)
+    fetch(`/register/menu/search?query=${query.value}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
@@ -117,39 +136,31 @@ const form = useForm({
 
 const sendOrder = () => {
     form.menuSales = [...menuSales];
-    form.post('/register/order', {
+    form.post('/register/menu/order', {
         preserveScroll: true,
-        onSuccess: (response) => {
-            state.successMessage = 'Order created successfully';
+        onSuccess: () => {
+            displaySuccessMessage();
             menuSales.splice(0);
-            setTimeout(() => {
-                state.successMessage = '';
-            }, 10000);
         },
-        onError: (error) => {
-            state.errorMessage = error.message;
-            setTimeout(() => {
-                state.errorMessage = '';
-            }, 10000);
-        },
+        onError: () => {
+            displayErrorMessage();
+        }
     });
 };
 
-defineExpose({ menus: state.menus, query, amounts, search, groupedMenus, updateAmount, addSale, menuSales, total, deleteSale, sendOrder });
+defineExpose({ menus: state.menus, query, amounts, search, groupedMenus, updateAmount, addSale, menuSales, total, deleteSale, sendOrder, displaySuccessMessage, displayErrorMessage });
 </script>
 
 <template>
     <BackOffice>
-        <div v-if="state.successMessage" class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
-            <strong class="font-bold">Success!</strong>
-            <span class="block sm:inline">{{ state.successMessage }}</span>
+        <div v-if="successMessage" class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 relative" role="alert">
+            <p class="font-bold">Success</p>
+            <p>{{ successMessage }}</p>
         </div>
-
-        <div v-if="state.errorMessage" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-            <strong class="font-bold">Error!</strong>
-            <span class="block sm:inline">{{ state.errorMessage }}</span>
+        <div v-if="errorMessage" class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 relative" role="alert">
+            <p class="font-bold">Error</p>
+            <p>{{ errorMessage }}</p>
         </div>
-
         <div class="flex justify-center mt-10">
             <input v-model="query" @input="search" placeholder="Search..." class="p-2 border-2 border-gray-300 rounded-md focus:outline-none focus:border-blue-500" />
         </div>
