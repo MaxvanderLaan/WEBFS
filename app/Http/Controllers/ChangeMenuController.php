@@ -42,7 +42,7 @@ class ChangeMenuController extends Controller{
                 'mealTypes' => $mealTypes,
             ]);
         } else {
-            return redirect()->route('change.menu.index')->with('error', 'Menu not found');
+            return redirect()->route('change.menu')->with('error', 'Menu not found');
         }
     }
 
@@ -74,5 +74,51 @@ class ChangeMenuController extends Controller{
         ]);
     
         return back()->with('success', 'Menu updated successfully');
+    }
+
+    public function create()
+    {
+        $mealTypes = MealType::get();
+        return Inertia::render('Auth/ChangeMenu/ChangeMenuCreate', [
+            'mealTypes' => $mealTypes,
+        ]);
+    }
+
+    public function make(Request $request)
+    {
+        $request->validate([
+            'number' => 'required|integer',
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string|max:255',
+            'addition' => 'nullable|string|max:1',
+            'price' => 'required|numeric',
+            'meal_type_id' => 'required|integer|exists:meal_types,id',
+        ]);
+    
+        $menu = new Menu([
+            'number' => $request->number,
+            'name' => $request->name,
+            'description' => $request->description,
+            'addition' => $request->addition,
+            'price' => $request->price,
+        ]);
+    
+        $menu->meal_type_id = $request->meal_type_id;
+        $menu->save();
+    
+        return back()->with('success', 'Menu updated successfully');
+    }
+
+    public function delete(Request $request)
+    {
+        $menu = Menu::find($request->id);
+
+        if (!$menu) {
+            return back()->with('error', 'Menu not found');
+        }
+
+        $menu->delete();
+
+        return redirect()->route('change.menu')->with('success', 'Menu deleted successfully');
     }
 }

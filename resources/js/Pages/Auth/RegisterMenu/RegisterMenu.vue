@@ -35,21 +35,21 @@ const successMessage = ref<string | null>(null);
 const errorMessage = ref<string | null>(null);
 
 const displaySuccessMessage = () => {
-  successMessage.value = 'Successfully created order!';
-  errorMessage.value = null;
+    successMessage.value = 'Successfully created order!';
+    errorMessage.value = null;
 
-  setTimeout(() => {
-    successMessage.value = null;
-  }, 10000);
+    setTimeout(() => {
+        successMessage.value = null;
+    }, 10000);
 };
 
 const displayErrorMessage = () => {
-  successMessage.value = null;
-  errorMessage.value = 'Failed to create order!';
+    successMessage.value = null;
+    errorMessage.value = 'Failed to create order!';
 
-  setTimeout(() => {
-    errorMessage.value = null;
-  }, 10000);
+    setTimeout(() => {
+        errorMessage.value = null;
+    }, 10000);
 };
 
 const props = defineProps({

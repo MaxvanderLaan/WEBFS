@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineProps, reactive, ref, computed, defineExpose } from 'vue';
+import { defineProps, reactive, ref, computed, defineExpose, onMounted } from 'vue';
 import BackOffice from '@/Layouts/AuthenticatedLayout.vue';
 
 interface MealType {
@@ -62,7 +62,9 @@ defineExpose({ menus: state.menus, groupedMenus, query, search});
         <div class="flex justify-center mt-10">
             <input v-model="query" @input="search" placeholder="Search..." class="p-2 border-2 border-gray-300 rounded-md focus:outline-none focus:border-blue-500" />
         </div>
-
+        <a :href="`/change/menu/create`" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            Create
+        </a>
         <div class="flex mt-5">
             <div class="w-full">
                 <div v-for="(menus, mealType) in groupedMenus" :key="mealType">
