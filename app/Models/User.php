@@ -4,16 +4,12 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
     use HasFactory, Notifiable;
-
-    const ROLE_ADMIN = 'admin';
-    const ROLE_STAFF = 'staff';
 
     /**
      * The attributes that are mass assignable.
@@ -24,7 +20,6 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role',
     ];
 
     /**
@@ -37,16 +32,6 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    public function plannings(): HasMany
-    {
-        return $this->hasMany(Planning::class);
-    }
-
-    public function isAdmin(): bool
-    {
-        return $this->role === self::ROLE_ADMIN;
-    }
-
     /**
      * Get the attributes that should be cast.
      *
@@ -57,7 +42,6 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
-            'role' => 'string',
         ];
     }
 }
