@@ -1,29 +1,18 @@
 <script setup lang="ts">
-import { defineProps, ref } from 'vue';
+import { defineProps, ref, onMounted } from 'vue';
 import BackOffice from '@/Layouts/AuthenticatedLayout.vue';
 import { useForm } from '@inertiajs/vue3';
-import Menu from '@/Pages/Menus/Menu.vue';
 
 interface MealType {
     id: number;
     type: string;
 }
 
-interface Menu {
-    id: number;
-    name: string;
-    number: number;
-    addition: string;
-    price: number;
-    description: string;
-    meal_type: MealType;
-}
-
 const successMessage = ref<string | null>(null);
 const errorMessage = ref<string | null>(null);
 
 const displaySuccessMessage = () => {
-    successMessage.value = 'Menu ' + props.menu.name + ' updated successfully!';
+    successMessage.value = 'Menu ' + form.name + ' created successfully!';
     errorMessage.value = null;
 
     setTimeout(() => {
@@ -41,16 +30,35 @@ const displayErrorMessage = () => {
 };
 
 const props = defineProps({
-    menu: {
-        type: Object as () => Menu,
-        required: true,
-    },
     mealTypes: Array as () => MealType[],
     errors: Object as () => Record<string, string[]>,
 });
 
-const form = useForm(props.menu);
-const deleteForm = useForm({ id: props.menu.id });
+const form = useForm({
+    id: null,
+    name: '',
+    number: null,
+    addition: '',
+    price: null,
+    description: '',
+    meal_type_id: 0,
+});
+
+const clearForm = () => {
+    form.id = null;
+    form.name = '';
+    form.number = null;
+    form.addition = '';
+    form.price = null;
+    form.description = '';
+    form.meal_type_id = props.mealTypes && props.mealTypes.length > 0 ? props.mealTypes[0].id : 0;
+};
+
+onMounted(() => {
+    if (props.mealTypes && props.mealTypes.length > 0) {
+        form.meal_type_id = props.mealTypes[0].id;
+    }
+});
 
 </script>
 
@@ -67,11 +75,13 @@ const deleteForm = useForm({ id: props.menu.id });
             <p class="font-bold">Error</p>
             <p>{{ errorMessage }}</p>
         </div>
-        <form @submit.prevent="form.submit('put', `/change/menu/update`, {
-            onSuccess: displaySuccessMessage,
+        <form @submit.prevent="form.submit('post', `/change/menu/make`, {
+                onSuccess: () => {
+                    displaySuccessMessage();
+                    clearForm();
+                },
             onError: displayErrorMessage,
         })">
-            <input type="hidden" v-model="form.id" />
             <div class="flex flex-col space-y-4">
                 <div>
                     <label for="number" class="block text-sm font-medium text-gray-700">Number</label>
@@ -106,7 +116,7 @@ const deleteForm = useForm({ id: props.menu.id });
                 <div>
                     <label for="meal_type" class="block text-sm font-medium text-gray-700">Meal Type</label>
                     <p class="text-red-500 text-xs italic" v-if="props.errors?.meal_type_id">{{ props.errors?.meal_type_id }}</p>
-                    <select id="meal_type" v-model="form.meal_type.id" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                    <select id="meal_type" v-model="form.meal_type_id" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
                     <option v-for="mealType in props.mealTypes" :key="mealType.id" :value="mealType.id">
                         {{ mealType.type }}
                     </option>
@@ -115,12 +125,7 @@ const deleteForm = useForm({ id: props.menu.id });
             </div>
         
             <div class="flex justify-between">
-                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">Update</button>
-                <form @submit.prevent="deleteForm.submit('post', `/change/menu/delete`)">
-                    <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-4">
-                        Delete
-                    </button>
-                </form>
+                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">Create</button>
             </div>
         </form>
     </BackOffice>

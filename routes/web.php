@@ -15,6 +15,10 @@ Route::get('/', function () {
     ]);
 });
 
+Route::get('/get-session-message', function () {
+    return response()->json(['success' => session('success')]);
+});
+
 Route::get('/menu', [ContactController::class, 'index'])->name('menu');
 Route::get('/news', [ContactController::class, 'index'])->name('news');
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
@@ -34,8 +38,11 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/change/menu', [ChangeMenuController::class, 'index'])->name('change.menu');
     Route::get('/change/menu/search', [ChangeMenuController::class, 'search'])->name('change.menu.search');
+    Route::get('/change/menu/create', [ChangeMenuController::class, 'create'])->name('change.menu.create');
+    Route::post('/change/menu/make', [ChangeMenuController::class, 'make'])->name('change.menu.make');
     Route::get('/change/menu/edit/{id}', [ChangeMenuController::class, 'edit'])->name('change.menu.edit');
     Route::put('/change/menu/update', [ChangeMenuController::class, 'update'])->name('change.menu.update');
+    Route::post('/change/menu/delete', [ChangeMenuController::class, 'delete'])->name('change.menu.delete');
 });
 
 Route::get('/locale/{locale}', function ($locale) {
