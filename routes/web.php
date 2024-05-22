@@ -4,6 +4,7 @@ use App\Http\Controllers\ChangeMenuController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterOrderController;
+use App\Http\Controllers\TableController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Session;
@@ -43,6 +44,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/change/menu/edit/{id}', [ChangeMenuController::class, 'edit'])->name('change.menu.edit');
     Route::put('/change/menu/update', [ChangeMenuController::class, 'update'])->name('change.menu.update');
     Route::post('/change/menu/delete', [ChangeMenuController::class, 'delete'])->name('change.menu.delete');
+
+    Route::get('/admin/table', [TableController::class, 'index'])->name('admin.table');
+    Route::get('/admin/table/create', [TableController::class, 'create'])->name('admin.table.create');
+    Route::post('/admin/table/make', [TableController::class, 'make'])->name('admin.table.make');
+    Route::get('/admin/table/edit/{id}', [TableController::class, 'edit'])->name('admin.table.edit');
+    Route::put('/admin/table/update', [TableController::class, 'update'])->name('admin.table.update');
+    Route::post('/admin/table/delete', [TableController::class, 'delete'])->name('admin.table.delete');
 });
 
 Route::get('/locale/{locale}', function ($locale) {
