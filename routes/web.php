@@ -2,8 +2,10 @@
 
 use App\Http\Controllers\ChangeMenuController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\PlanningController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterOrderController;
+use App\Http\Controllers\TableController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Session;
@@ -43,6 +45,20 @@ Route::middleware('auth')->group(function () {
     Route::get('/change/menu/edit/{id}', [ChangeMenuController::class, 'edit'])->name('change.menu.edit');
     Route::put('/change/menu/update', [ChangeMenuController::class, 'update'])->name('change.menu.update');
     Route::post('/change/menu/delete', [ChangeMenuController::class, 'delete'])->name('change.menu.delete');
+
+    Route::get('/admin/table', [TableController::class, 'index'])->name('admin.table');
+    Route::get('/admin/table/create', [TableController::class, 'create'])->name('admin.table.create');
+    Route::post('/admin/table/make', [TableController::class, 'make'])->name('admin.table.make');
+    Route::get('/admin/table/edit/{id}', [TableController::class, 'edit'])->name('admin.table.edit');
+    Route::put('/admin/table/update', [TableController::class, 'update'])->name('admin.table.update');
+    Route::post('/admin/table/delete', [TableController::class, 'delete'])->name('admin.table.delete');
+
+    Route::get('/admin/planning', [PlanningController::class, 'index'])->name('admin.planning');
+    Route::get('/admin/planning/create', [PlanningController::class, 'create'])->name('admin.planning.create');
+    Route::post('/admin/planning/make', [PlanningController::class, 'make'])->name('admin.planning.make');
+    Route::get('/admin/planning/edit/{id}', [PlanningController::class, 'edit'])->name('admin.planning.edit');
+    Route::put('/admin/planning/update', [PlanningController::class, 'update'])->name('admin.planning.update');
+    Route::post('/admin/planning/delete', [PlanningController::class, 'delete'])->name('admin.planning.delete');
 });
 
 Route::get('/locale/{locale}', function ($locale) {

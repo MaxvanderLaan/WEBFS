@@ -13,6 +13,7 @@ class Table extends Model
 
     protected $fillable = [
         'number',
+        'is_archived',
     ];
 
     public function tableCustomers(): HasMany
@@ -25,15 +26,16 @@ class Table extends Model
         return $this->belongsToMany(TableHelp::class);
     }
 
-    public function plannings(): HasMany
+    public function planningTables(): HasMany
     {
-        return $this->hasMany(Planning::class);
+        return $this->hasMany(PlanningTable::class);
     }
 
     protected function casts(): array
     {
         return [
             'number' => 'integer',
+            'is_archived' => 'boolean',
         ];
     }
 }
