@@ -26,9 +26,9 @@ class Table extends Model
         return $this->belongsToMany(TableHelp::class);
     }
 
-    public function plannings(): HasMany
+    public function planningTables(): HasMany
     {
-        return $this->hasMany(Planning::class);
+        return $this->hasMany(PlanningTable::class);
     }
 
     protected function casts(): array

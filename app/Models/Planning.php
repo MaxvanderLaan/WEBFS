@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Planning extends Model
 {
@@ -25,8 +26,8 @@ class Planning extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function table(): BelongsTo
+    public function planningTables(): HasMany
     {
-        return $this->belongsTo(Table::class);
+        return $this->hasMany(PlanningTable::class);
     }
 }
