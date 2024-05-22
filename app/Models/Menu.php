@@ -17,6 +17,7 @@ class Menu extends Model
         'name',
         'price',
         'description',
+        'is_archived',
     ];
 
     public function menuSales(): HasMany
@@ -47,6 +48,20 @@ class Menu extends Model
             'name' => 'string',
             'price' => 'decimal:2',
             'description' => 'string',
+            'is_archived' => 'boolean',
         ];
+    }
+
+    protected static function booted()
+    {
+        static::updated(function ($menu) {
+            if ($menu->wasChanged('price')) {
+                $history = new MenuPriceHistory;
+                $history->menu_id = $menu->id;
+                $history->price = $menu->price;
+                $history->changed_at = now();
+                $history->save();
+            }
+        });
     }
 }

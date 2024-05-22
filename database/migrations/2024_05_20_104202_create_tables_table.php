@@ -16,6 +16,7 @@ class CreateTablesTable extends Migration
         Schema::create('tables', function (Blueprint $table) {
             $table->id();
             $table->integer('number');
+            $table->boolean('is_archived')->default(false);
             $table->timestamps();
         });
     }

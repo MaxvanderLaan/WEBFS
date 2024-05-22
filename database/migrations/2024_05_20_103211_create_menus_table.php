@@ -20,6 +20,7 @@ class CreateMenusTable extends Migration
             $table->string('name');
             $table->decimal('price', 8, 2);
             $table->text('description')->nullable();
+            $table->boolean('is_archived')->default(false);
             $table->foreignId('meal_type_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });

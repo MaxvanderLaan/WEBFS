@@ -12,6 +12,7 @@ class MealType extends Model
 
     protected $fillable = [
         'type',
+        'is_archived',
     ];
 
     public function menus(): HasMany
@@ -23,6 +24,7 @@ class MealType extends Model
     {
         return [
             'type' => 'string',
+            'is_archived' => 'boolean',
         ];
     }
 }

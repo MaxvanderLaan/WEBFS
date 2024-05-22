@@ -16,6 +16,7 @@ class CreateMealTypesTable extends Migration
         Schema::create('meal_types', function (Blueprint $table) {
             $table->id();
             $table->string('type');
+            $table->boolean('is_archived')->default(false);
             $table->timestamps();
         });
     }

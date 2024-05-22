@@ -13,6 +13,7 @@ class Table extends Model
 
     protected $fillable = [
         'number',
+        'is_archived',
     ];
 
     public function tableCustomers(): HasMany
@@ -34,6 +35,7 @@ class Table extends Model
     {
         return [
             'number' => 'integer',
+            'is_archived' => 'boolean',
         ];
     }
 }
