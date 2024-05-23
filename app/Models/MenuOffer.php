@@ -28,4 +28,15 @@ class MenuOffer extends Model
     {
         return $this->belongsTo(Menu::class);
     }
+
+    public function getPriceAttribute()
+    {
+        $priceHistory = $this->menu->priceHistories()
+            ->where('changed_at', '>=', $this->start_date)
+            ->where('changed_at', '<=', $this->end_date)
+            ->orderBy('changed_at', 'desc')
+            ->first();
+
+        return $priceHistory ? $priceHistory->price : $this->menu->price;
+    }
 }

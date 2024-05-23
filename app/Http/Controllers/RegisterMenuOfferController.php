@@ -10,6 +10,18 @@ use Illuminate\Http\Request;
 
 class RegisterMenuOfferController extends Controller{
 
+    public function index()
+    {
+        $menuOffers = MenuOffer::with('menu')->get()->map(function ($offer) {
+            $offer->price = $offer->price;
+            return $offer;
+        });
+    
+        return Inertia::render('Auth/Register/Menu/Offer/Index', [
+            'menuOffers' => $menuOffers,
+        ]);
+    }
+
     public function search(Request $request)
     {
         $query = $request->get('query');
