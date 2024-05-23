@@ -223,6 +223,7 @@ defineExpose({ menus: state.menus, query, amounts, search, groupedMenus, updateA
                             <th class="text-left px-4 py-2">Menu Name</th>
                             <th class="text-left px-4 py-2">Price</th>
                             <th class="text-left px-4 py-2">Remark</th>
+                            <th class="text-left px-4 py-2">Addition</th>
                             <th class="text-left px-4 py-2">Amount</th>
                         </tr>
                     </thead>
