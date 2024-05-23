@@ -14,6 +14,7 @@ interface Menu {
     addition: string;
     price: number;
     description: string;
+    is_archived: boolean;
     meal_type: MealType;
 }
 
@@ -39,8 +40,18 @@ const groupedMenus = computed(() => {
 });
 
 const query = ref('');
+let controller = new AbortController();
+let signal = controller.signal;
+const isLoading = ref(false);
+
 const search = () => {
-    fetch(`/change/menu/search?query=${query.value}`)
+    controller.abort();
+    controller = new AbortController();
+    signal = controller.signal;
+
+    isLoading.value = true;
+
+    fetch(`/change/menu/search?query=${query.value}`, { signal })
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
@@ -48,10 +59,14 @@ const search = () => {
             return response.json();
         })
         .then(data => {
-            console.log(data);
             state.menus = data;
+            isLoading.value = false;
         })
-        .catch(error => console.error('Error:', error));
+        .catch(error => {
+            if (error.name !== 'AbortError') {
+                console.error('Error:', error);
+            }
+        })
 };
 
 defineExpose({ menus: state.menus, groupedMenus, query, search});
@@ -62,6 +77,7 @@ defineExpose({ menus: state.menus, groupedMenus, query, search});
         <div class="flex justify-center mt-10">
             <input v-model="query" @input="search" placeholder="Search..." class="p-2 border-2 border-gray-300 rounded-md focus:outline-none focus:border-blue-500" />
         </div>
+        <div class="flex justify-center mt-10" v-if="isLoading">Loading...</div>
         <a :href="`/change/menu/create`" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
             Create
         </a>
@@ -77,6 +93,7 @@ defineExpose({ menus: state.menus, groupedMenus, query, search});
                                 <th class="text-left px-4 py-2">Description</th>
                                 <th class="text-left px-4 py-2">Addition</th>
                                 <th class="text-left px-4 py-2">Price</th>
+                                <th class="text-left px-4 py-2">Is Archived</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -86,6 +103,7 @@ defineExpose({ menus: state.menus, groupedMenus, query, search});
                                 <td class="border w-3/6 px-4 py-2">{{ menu.description }}</td>
                                 <td class="border w-1/12 px-4 py-2">{{ menu.addition }}</td>
                                 <td class="border w-1/12 px-4 py-2">{{ menu.price }}</td>
+                                <td class="border w-1/12 px-4 py-2">{{ menu.is_archived }}</td>
                                 <td class="border w-1/12 px-4 py-2">
                                     <a :href="`/change/menu/edit/${menu.id}`" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                                         Edit

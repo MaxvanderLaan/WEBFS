@@ -4,6 +4,9 @@ import vue from '@vitejs/plugin-vue';
 import i18n from 'laravel-vue-i18n/vite'; 
 
 export default defineConfig({
+    server: {
+        host: 'localhost'
+    },
     plugins: [
         laravel({
             input: 'resources/js/app.ts',

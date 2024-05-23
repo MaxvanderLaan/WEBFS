@@ -14,7 +14,7 @@ class RegisterOrderController extends Controller{
 
     public function index()
     {
-        $menus = Menu::with('mealType')->get();
+        $menus = Menu::with('mealType')->where('is_archived', false)->get();
         $mealAdditions = MealAddition::get();
         return Inertia::render('Auth/RegisterMenu/RegisterMenu', [
             'menus' => $menus,
@@ -27,13 +27,16 @@ class RegisterOrderController extends Controller{
         $query = $request->get('query');
     
         $menus = Menu::with('mealType')
-            ->where('name', 'LIKE', "%{$query}%")
-            ->orWhere('number', $query)
-            ->orWhereHas('mealType', function ($q) use ($query) {
-                $q->where('type', 'LIKE', "%{$query}%");
+            ->where('is_archived', false)
+            ->where(function ($q) use ($query) {
+                $q->where('name', 'LIKE', "%{$query}%")
+                  ->orWhere('number', $query)
+                  ->orWhereHas('mealType', function ($q) use ($query) {
+                      $q->where('type', 'LIKE', "%{$query}%");
+                  });
             })
             ->get();
-
+    
         return response()->json($menus);
     }
 
