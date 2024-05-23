@@ -4,8 +4,10 @@ use App\Http\Controllers\ChangeMenuController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\PlanningController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RegisterMenuOfferController;
 use App\Http\Controllers\RegisterOrderController;
 use App\Http\Controllers\TableController;
+use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Session;
@@ -16,6 +18,8 @@ Route::get('/', function () {
         'canRegister' => Route::has('register'),
     ]);
 });
+
+Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
 
 Route::get('/get-session-message', function () {
     return response()->json(['success' => session('success')]);
@@ -35,8 +39,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('/register/menu', [RegisterOrderController::class, 'index'])->name('register.menu');
-    Route::get('/register/menu/search', [RegisterOrderController::class, 'search'])->name('search.menu.search');
+    Route::get('/register/menu/search', [RegisterOrderController::class, 'search'])->name('register.menu.search');
     Route::post('/register/menu/order', [RegisterOrderController::class, 'store'])->name('register.menu.order');
+
+    Route::get('/register/menu/offer', [RegisterMenuOfferController::class, 'index'])->name('register.menu.offer');
+    Route::get('/register/menu/offer/create', [RegisterMenuOfferController::class, 'create'])->name('register.menu.offer.create');
+    Route::post('/register/menu/offer/make', [RegisterMenuOfferController::class, 'make'])->name('register.menu.offer.make');
 
     Route::get('/change/menu', [ChangeMenuController::class, 'index'])->name('change.menu');
     Route::get('/change/menu/search', [ChangeMenuController::class, 'search'])->name('change.menu.search');
