@@ -21,11 +21,6 @@ interface MenuOffer {
     menu: Menu;
 }
 
-interface FormattedMenuOffer extends MenuOffer {
-    formatted_start_date: string;
-    formatted_end_date: string;
-}
-
 let formattedMenuOffers = computed(() => {
     return props.menuOffers.map(offer => {
         let startDate = new Date(offer.start_date);
