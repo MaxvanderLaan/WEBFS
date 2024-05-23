@@ -55,6 +55,7 @@ class ChangeMenuController extends Controller{
             'description' => 'nullable|string|max:255',
             'addition' => 'nullable|string|max:1',
             'price' => 'required|numeric',
+            'is_archived' => 'required|boolean',
             'meal_type_id' => 'required|integer|exists:meal_types,id',
         ]);
     
@@ -70,6 +71,7 @@ class ChangeMenuController extends Controller{
             'description' => $request->description,
             'addition' => $request->addition,
             'price' => $request->price,
+            'is_archived' => $request->is_archived,
             'meal_type_id' => $request->meal_type_id,
         ]);
     

@@ -88,8 +88,18 @@ const deleteSale = (sale: MenuSale) => {
     }
 }
 
+let controller = new AbortController();
+let signal = controller.signal;
+const isLoading = ref(false);
+
 const search = () => {
-    fetch(`/register/menu/search?query=${query.value}`)
+    controller.abort();
+    controller = new AbortController();
+    signal = controller.signal;
+
+    isLoading.value = true;
+
+    fetch(`/register/menu/search?query=${query.value}`, { signal })
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
@@ -97,10 +107,14 @@ const search = () => {
             return response.json();
         })
         .then(data => {
-            console.log(data);
             state.menus = data;
+            isLoading.value = false;
         })
-        .catch(error => console.error('Error:', error));
+        .catch(error => {
+            if (error.name !== 'AbortError') {
+                console.error('Error:', error);
+            }
+        })
 };
 
 const groupedMenus = computed(() => {
@@ -164,8 +178,9 @@ defineExpose({ menus: state.menus, query, amounts, search, groupedMenus, updateA
         <div class="flex justify-center mt-10">
             <input v-model="query" @input="search" placeholder="Search..." class="p-2 border-2 border-gray-300 rounded-md focus:outline-none focus:border-blue-500" />
         </div>
-        <div class="flex mt-5">
-            <div class="w-1/2">
+        <div class="flex justify-center mt-10" v-if="isLoading">Loading...</div>
+        <div class="flex flex-col 2xl::flex-row mt-5">
+            <div class="w-full 2xl::w-1/2 order-2 2xl::order-1">
                 <div v-for="(menus, mealType) in groupedMenus" :key="mealType">
                     <h2 class="text-center text-xl font-bold mb-2">{{ mealType }}</h2>
                     <table class="table-auto w-full">
@@ -199,7 +214,7 @@ defineExpose({ menus: state.menus, query, amounts, search, groupedMenus, updateA
                 </div>
                 <div v-if="state.menus.length === 0" class="text-center text-gray-500 text-xl">No menus</div>
             </div>
-            <div class="w-1/2">
+            <div class="w-full 2xl::w-1/2 order-1 2xl::order-2">
                 <h2 class="text-center text-xl font-bold mb-2">Menu Sales</h2>
                 <table class="table-auto w-full">
                     <thead>

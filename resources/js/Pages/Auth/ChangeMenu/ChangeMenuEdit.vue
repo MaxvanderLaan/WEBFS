@@ -16,6 +16,7 @@ interface Menu {
     addition: string;
     price: number;
     description: string;
+    is_archived: boolean;
     meal_type: MealType;
 }
 
@@ -101,6 +102,11 @@ const deleteForm = useForm({ id: props.menu.id });
                     <label for="price" class="block text-sm font-medium text-gray-700">Price</label>
                     <p class="text-red-500 text-xs italic" v-if="props.errors?.price">{{ props.errors?.price }}</p>
                     <input id="price" v-model="form.price" type="number" step="0.01" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" />
+                </div>
+
+                <div class="flex flex-col">
+                    <label for="archive" class="block text-sm font-medium text-gray-700">Archive</label>
+                    <input id="archive" type="checkbox" v-model="form.is_archived" class="mt-1 h-4 w-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500" />
                 </div>
         
                 <div>
