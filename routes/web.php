@@ -39,10 +39,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/register/menu/search', [RegisterOrderController::class, 'search'])->name('register.menu.search');
     Route::post('/register/menu/order', [RegisterOrderController::class, 'store'])->name('register.menu.order');
 
-    Route::get('/register/menu/offer', [RegisterMenuOfferController::class, 'index'])->name('register.menu.offer');
     Route::get('/register/menu/offer/create', [RegisterMenuOfferController::class, 'create'])->name('register.menu.offer.create');
     Route::post('/register/menu/offer/make', [RegisterMenuOfferController::class, 'make'])->name('register.menu.offer.make');
-    Route::post('/register/menu/offer/edit/{id}', [RegisterMenuOfferController::class, 'store'])->name('register.menu.offer.edit');
 
     Route::get('/change/menu', [ChangeMenuController::class, 'index'])->name('change.menu');
     Route::get('/change/menu/search', [ChangeMenuController::class, 'search'])->name('change.menu.search');

@@ -20,15 +20,21 @@ interface Menu {
 }
 
 interface MenuOffer {
-    menuId: number;
+    id?: number;
     discount: number;
-    startDate: string;
-    endDate: string;
+    start_date: string;
+    end_date: string;
     number: number;
+    menu_id: number;
 }
 
-const menuOffers = reactive<MenuOffer[]>([]);
+let tempIdCounter = -1;
+
 const addMenu = (menu: Menu) => {
+    if (state.menuOffers.some(m => m.menu_id === menu.id)) {
+        return;
+    }
+
     const discount = 0;
 
     const now = new Date();
@@ -39,14 +45,22 @@ const addMenu = (menu: Menu) => {
     const startDate = new Date(nextWeek.getFullYear(), nextWeek.getMonth(), startDay + 1).toISOString().split('T')[0];
     const endDate = new Date(nextWeek.getFullYear(), nextWeek.getMonth(), endDay + 1).toISOString().split('T')[0];
 
-    menuOffers.push({ menuId: menu.id, discount, startDate, endDate, number: menuOffers.length + 1 });
+    state.menuOffers.push({
+        discount,
+        start_date: startDate,
+        end_date: endDate,
+        number: state.menuOffers.length + 1,
+        menu_id: menu.id
+    });
 }
+
 const deleteMenu = (menuOffer: MenuOffer) => {
-    const index = menuOffers.findIndex(s => s.menuId === menuOffer.menuId);
+    const index = state.menuOffers.findIndex(s => s.menu_id === menuOffer.menu_id);
     if (index !== -1) {
-        menuOffers.splice(index, 1);
+        state.menuOffers.splice(index, 1);
     }
 }
+
 const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
@@ -56,7 +70,7 @@ const successMessage = ref<string | null>(null);
 const errorMessage = ref<string | null>(null);
 
 const displaySuccessMessage = () => {
-    successMessage.value = 'Offer created successfully!';
+    successMessage.value = 'Offers for next week updated successfully!';
     errorMessage.value = null;
 
     setTimeout(() => {
@@ -73,7 +87,7 @@ const displayErrorMessage = (errors: Errors) => {
         if (key.startsWith('menuOffers.')) {
             const index = key.split('.')[1];
             const field = key.split('.')[2];
-            const menuId = menuOffers[parseInt(index)].menuId;
+            const menuId = state.menuOffers[parseInt(index)].menu_id;
             let menuIndex = state.menus.findIndex(m => m.id === menuId);
             let menu = state.menus[menuIndex];
             const errorMessage = errors[key].replace(key, field);
@@ -94,10 +108,12 @@ const displayErrorMessage = (errors: Errors) => {
 
 const props = defineProps({
     menus: Array as () => Menu[],
+    menuOffers: Array as () => MenuOffer[],
 });
 
 const state = reactive({
     menus: props.menus || [],
+    menuOffers: props.menuOffers || [],
 });
 
 const form = useForm({
@@ -105,15 +121,15 @@ const form = useForm({
 });
 
 const sendOffer = () => {
-    form.menuOffers = [...menuOffers];
+    form.menuOffers = [...state.menuOffers];
     form.post('/register/menu/offer/make', {
         preserveScroll: true,
         onSuccess: () => {
             displaySuccessMessage();
-            menuOffers.splice(0);
         },
         onError: (errors) => {
             displayErrorMessage(errors);
+            form.reset();
         },
     });
 };
@@ -163,7 +179,7 @@ const search = () => {
 
 <template>
     <BackOffice>
-        <a :href="`/register/menu/offer`" class= text-blue-500 font-bold py-2>
+        <a :href="`/register/menu/offer`" class="text-blue-500 font-bold py-2">
             Back
         </a>
         <div v-if="successMessage" class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 relative" role="alert">
@@ -201,7 +217,7 @@ const search = () => {
                                 <td class="border w-1/12 px-4 py-2">{{ menu.addition }}</td>
                                 <td class="border w-1/12 px-4 py-2">{{ menu.price }}</td>
                                 <td class="border w-1/12 px-4 py-2">
-                                    <button @click="addMenu(menu)" class="px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-700">Add</button>
+                                    <button v-if="!state.menuOffers.some(offer => offer.menu_id === menu.id)" @click="addMenu(menu)" class="px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-700">Add</button>
                                 </td>
                             </tr>
                         </tbody>
@@ -222,17 +238,17 @@ const search = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="menuOffer in menuOffers" :key="menuOffer.menuId">
-                            <td class="border w-1/12 px-4 py-2">{{ menuOffer.menuId }}</td>
-                            <td class="border w-1/6 px-4 py-2">{{ menus && menus.find(menu => menu.id === menuOffer.menuId)?.name }}</td>
+                        <tr v-for="menuOffer in state.menuOffers" :key="menuOffer.id">
+                            <td class="border w-1/12 px-4 py-2">{{ state.menus.find(menu => menu.id === menuOffer.menu_id)?.number }}</td>
+                            <td class="border w-1/6 px-4 py-2">{{ state.menus.find(menu => menu.id === menuOffer.menu_id)?.name }}</td>
                             <td class="border w-1/6 px-4 py-2">
                                 <input type="number" v-model="menuOffer.discount" class="p-1 border-2 border-gray-300 rounded-md focus:outline-none focus:border-blue-500" />
                             </td>
                             <td class="border w-1/6 px-4 py-2">
-                                <input type="text" :value="formatDate(menuOffer.startDate)" readonly class="p-1 border-2 border-gray-300 rounded-md focus:outline-none focus:border-blue-500" />
+                                <input type="text" :value="formatDate(menuOffer.start_date)" readonly class="p-1 border-2 border-gray-300 rounded-md focus:outline-none focus:border-blue-500" />
                             </td>
                             <td class="border w-1/6 px-4 py-2">
-                                <input type="text" :value="formatDate(menuOffer.endDate)" readonly class="p-1 border-2 border-gray-300 rounded-md focus:outline-none focus:border-blue-500" />
+                                <input type="text" :value="formatDate(menuOffer.end_date)" readonly class="p-1 border-2 border-gray-300 rounded-md focus:outline-none focus:border-blue-500" />
                             </td>
                             <td class="border w-1/12 px-4 py-2">
                                 <button @click="deleteMenu(menuOffer)" class="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-700">Remove</button>
@@ -241,7 +257,7 @@ const search = () => {
                     </tbody>
                 </table>
                 <div class="text-center mt-5">
-                    <button @click="sendOffer()" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-700">Create Offer</button>
+                    <button @click="sendOffer()" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-700">Update Offer</button>
                 </div>
             </div>
         </div>

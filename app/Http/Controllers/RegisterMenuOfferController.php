@@ -10,16 +10,6 @@ use Illuminate\Http\Request;
 
 class RegisterMenuOfferController extends Controller{
 
-    public function index()
-    {
-        $menus = Menu::with('mealType')->where('is_archived', false)->get();
-        $mealAdditions = MealAddition::get();
-        return Inertia::render('Auth/Register/Menu/Offer/Index', [
-            'menus' => $menus,
-            'mealAdditions' => $mealAdditions,
-        ]);
-    }
-
     public function search(Request $request)
     {
         $query = $request->get('query');
@@ -40,11 +30,17 @@ class RegisterMenuOfferController extends Controller{
 
     public function create()
     {
+        $nextWeekStart = now()->addWeek()->startOfWeek();
+        $nextWeekEnd = now()->addWeek()->endOfWeek();
         $menus = Menu::with('mealType')->where('is_archived', false)->get();
         $mealAdditions = MealAddition::get();
+        $menuOffers = MenuOffer::whereBetween('start_date', [$nextWeekStart, $nextWeekEnd])
+                                ->whereBetween('end_date', [$nextWeekStart, $nextWeekEnd])
+                                ->get();
         return Inertia::render('Auth/Register/Menu/Offer/Create', [
             'menus' => $menus,
             'mealAdditions' => $mealAdditions,
+            'menuOffers' => $menuOffers,
         ]);
     }
 
@@ -54,27 +50,33 @@ class RegisterMenuOfferController extends Controller{
         $nextWeekEnd = now()->addWeek()->endOfWeek();
     
         $validatedData = $request->validate([
-            'menuOffers' => 'required|array',
-            'menuOffers.*.menuId' => 'required|integer|exists:menus,id',
+            'menuOffers' => 'array',
+            'menuOffers.*.id' => 'sometimes|integer|exists:menu_offers,id',
+            'menuOffers.*.menu_id' => 'required|integer|exists:menus,id',
             'menuOffers.*.discount' => 'required|numeric|between:1,100',
-            'menuOffers.*.startDate' => 'required|date|after_or_equal:' . $nextWeekStart,
-            'menuOffers.*.endDate' => 'required|date|after_or_equal:menuOffers.*.start_date|before_or_equal:' . $nextWeekEnd,
+            'menuOffers.*.start_date' => 'required|date|after_or_equal:' . $nextWeekStart,
+            'menuOffers.*.end_date' => 'required|date|after_or_equal:menuOffers.*.start_date|before_or_equal:' . $nextWeekEnd,
         ]);
     
+        $ids = collect($validatedData['menuOffers'])->pluck('id')->filter()->all();
+    
+        MenuOffer::whereBetween('start_date', [$nextWeekStart, $nextWeekEnd])
+                 ->whereBetween('end_date', [$nextWeekStart, $nextWeekEnd])
+                 ->whereNotIn('id', $ids)
+                 ->delete();
+    
         foreach ($validatedData['menuOffers'] as $menuOfferData) {
-            $menuOffer = new MenuOffer();
-            $menuOffer->menu_id = $menuOfferData['menuId'];
-            $menuOffer->discount = $menuOfferData['discount'];
-            $menuOffer->start_date = $menuOfferData['startDate'];
-            $menuOffer->end_date = $menuOfferData['endDate'];
-            $menuOffer->save();
+            MenuOffer::updateOrCreate(
+                ['id' => $menuOfferData['id'] ?? null],
+                [
+                    'menu_id' => $menuOfferData['menu_id'],
+                    'discount' => $menuOfferData['discount'],
+                    'start_date' => $menuOfferData['start_date'],
+                    'end_date' => $menuOfferData['end_date'],
+                ]
+            );
         }
     
-        return back()->with('success', 'Menu offers created successfully!');
-    }
-
-    public function edit(Request $request)
-    {
-
+        return back()->with('success', 'Menu offers created or updated successfully!');
     }
 }
