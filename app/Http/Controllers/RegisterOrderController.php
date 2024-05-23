@@ -16,7 +16,7 @@ class RegisterOrderController extends Controller{
     {
         $menus = Menu::with('mealType')->where('is_archived', false)->get();
         $mealAdditions = MealAddition::get();
-        return Inertia::render('Auth/RegisterMenu/RegisterMenu', [
+        return Inertia::render('Auth/Register/Menu/Menu', [
             'menus' => $menus,
             'mealAdditions' => $mealAdditions,
         ]);
