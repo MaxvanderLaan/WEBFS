@@ -10,11 +10,11 @@ class MenuController extends Controller{
     public function index()
     {
         $now = now();
-        $startOfNextWeek = $now->startOfWeek()->addWeek()->startOfDay();
-        $endOfNextWeek = $now->copy()->endOfWeek()->addWeek();
+        $startOfThisWeek = $now->startOfWeek()->startOfDay();
+        $endOfThisWeek = $now->copy()->endOfWeek();
     
-        $menus = Menu::with(['mealType', 'menuOffers' => function ($query) use ($startOfNextWeek, $endOfNextWeek) {
-            $query->whereBetween('end_date', [$startOfNextWeek, $endOfNextWeek]);
+        $menus = Menu::with(['mealType', 'menuOffers' => function ($query) use ($startOfThisWeek, $endOfThisWeek) {
+            $query->whereBetween('end_date', [$startOfThisWeek, $endOfThisWeek]);
         }])
         ->where('is_archived', false)
         ->get();
