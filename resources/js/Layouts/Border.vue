@@ -3,7 +3,7 @@
 
 <template>
     <div class="w-full h-full bg-red-900 flex items-center justify-center">
-    <table id="main_table" style="padding:5px;border-collapse: collapse">
+    <table class="w-11/12" id="main_table" style="padding:5px;border-collapse: collapse">
 			<tr style="height:7px;background-color:red">
 				<td colspan="9">
 				</td>

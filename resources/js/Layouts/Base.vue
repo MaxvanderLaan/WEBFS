@@ -14,7 +14,7 @@ defineExpose({ asset });
 	<Border>
 		<div class="base-red">
         <LocaleSwitcher />
-			<div class="flex justify-between">
+            <div class="flex justify-between">
                 <div class="flex items-center">
                     <img :src="asset('pictures/dragon-small.png')" alt="Dragon" class="small-dragon">
                     <div class="chinese-text">
@@ -37,39 +37,39 @@ defineExpose({ asset });
                         <img :src="asset('pictures/dragon-small.png')" alt="Dragon" class="small-dragon inverted">
                     </div>
                 </div>
-                <div class="flex flex-wrap justify-center items-center">
-                    <img :src="asset('pictures/dragon-large.png')" alt="Dragon" class="big-dragon m-4">
-                    <div class="flex flex-col">
-                        <div class="text-center text-xl">
-                            <div class="main-text-sub m-4">
-                                {{ $t('messages.Chinese Indonesian Specialties') }}
+                    <div class="flex flex-col xl:flex-row items-center justify-center">
+                        <img :src="asset('pictures/dragon-large.png')" alt="Dragon" class="big-dragon m-4 order-1 xl:order-1">
+                        <img :src="asset('pictures/dragon-large.png')" alt="Dragon" class="big-dragon inverted m-4 order-2 xl:order-3">
+                        <div class="flex flex-col order-3 xl:order-2">
+                            <div class="text-center text-xl">
+                                <div class="main-text-sub m-4">
+                                    {{ $t('messages.Chinese Indonesian Specialties') }}
+                                </div>
+                                <div class="main-text m-4">
+                                    {{ $t('messages.The Golden Dragon') }}
+                                </div>
                             </div>
-                            <div class="main-text m-4">
-                            {{ $t('messages.The Golden Dragon') }}
-                            </div>
+                            <nav>
+                                <div class="text-white flex justify-center items-center">
+                                    <Link class="menu-button"
+                                    :href="route('menu')"
+                                    >
+                                    {{ $t('messages.Menu') }}
+                                    </Link>
+                                    <Link class="menu-button"
+                                        :href="route('news')"
+                                        >
+                                        {{ $t('messages.News') }}
+                                    </Link>
+                                    <Link class="menu-button"
+                                        :href="route('contact')"
+                                        >
+                                        {{ $t('messages.Contact') }}
+                                    </Link>
+                                </div>
+                            </nav>
                         </div>
-                        <nav>
-                            <div class="text-white flex justify-center items-center">
-                                <Link class="menu-button"
-                                :href="route('menu')"
-                                >
-                                {{ $t('messages.Menu') }}
-                                </Link>
-                                <Link class="menu-button"
-                                    :href="route('news')"
-                                    >
-                                    {{ $t('messages.News') }}
-                                </Link>
-                                <Link class="menu-button"
-                                    :href="route('contact')"
-                                    >
-                                    {{ $t('messages.Contact') }}
-                                </Link>
-                            </div>
-                        </nav>
                     </div>
-                    <img :src="asset('pictures/dragon-large.png')" alt="Dragon" class="big-dragon inverted m-4">
-                </div>
                 <slot />
                 <Footer />
 		</div>
