@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\ChangeMenuController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\MenuController;
+use App\Http\Controllers\NewsController;
 use App\Http\Controllers\PlanningController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterMenuOfferController;
@@ -25,8 +27,8 @@ Route::get('/get-session-message', function () {
     return response()->json(['success' => session('success')]);
 });
 
-Route::get('/menu', [ContactController::class, 'index'])->name('menu');
-Route::get('/news', [ContactController::class, 'index'])->name('news');
+Route::get('/menu', [MenuController::class, 'index'])->name('menu');
+Route::get('/news', [NewsController::class, 'index'])->name('news');
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 
 Route::get('/dashboard', function () {
