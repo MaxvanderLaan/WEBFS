@@ -5,7 +5,7 @@ import Footer from '@/Components/Footer.vue';
 import LocaleSwitcher from '@/Components/LocaleSwitcher.vue';
 import { defineExpose } from 'vue';
 
-const asset = (path: any) => `${import.meta.env.VITE_APP_URL}/storage/${path}`;
+const asset = (path: any) => `/storage/${path}`;
 
 defineExpose({ asset });
 </script>
