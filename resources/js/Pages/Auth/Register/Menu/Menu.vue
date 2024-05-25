@@ -21,6 +21,16 @@ interface Menu {
     price: number;
     description: string;
     meal_type: MealType;
+    menu_offers: MenuOffer[];
+}
+
+interface MenuOffer {
+    id: number;
+    discount: number;
+    start_date: string;
+    end_date: string;
+    number: number;
+    menu: Menu;
 }
 
 interface MenuSale {
@@ -130,7 +140,12 @@ const groupedMenus = computed(() => {
 
 const total = computed(() => {
     return menuSales.reduce((total, sale) => {
-        return total + sale.amount * sale.price;
+        const menu = state.menus.find(menu => menu.id === sale.menuId);
+        if (!menu) return total;
+        const discount = menu.menu_offers.length > 0 ? menu.menu_offers[0].discount : 0;
+        const price = discount ? menu.price * (1 - discount / 100) : menu.price;
+        const saleTotal = sale.amount * price;
+        return total + roundToNearestFiveCents(saleTotal);
     }, 0);
 });
 
@@ -192,7 +207,6 @@ defineExpose({ menus: state.menus, query, amounts, search, groupedMenus, updateA
                                 <th class="text-left px-4 py-2">Addition</th>
                                 <th class="text-left px-4 py-2">Price</th>
                                 <th class="text-left px-4 py-2">Amount</th>
-                                <th class="text-left px-4 py-2">Add</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -201,7 +215,13 @@ defineExpose({ menus: state.menus, query, amounts, search, groupedMenus, updateA
                                 <td class="border w-1/12 px-4 py-2">{{ menu.name }}</td>
                                 <td class="border w-3/6 px-4 py-2">{{ menu.description }}</td>
                                 <td class="border w-1/12 px-4 py-2">{{ menu.addition }}</td>
-                                <td class="border w-1/12 px-4 py-2">{{ menu.price }}</td>
+                                <td class="border w-1/12 px-4 py-2">
+                                    <p v-if="menu.menu_offers.length > 0"><span class="line-through text-red-500">€ {{ menu.price }}</span></p>
+                                    <p v-else>€ {{ menu.price }}</p>
+                                    <div v-for="offer in menu.menu_offers" :key="offer.id" class="flex justify-end">
+                                        <p class="text-green-500">{{ roundToNearestFiveCents((Math.round(menu.price * (1 - offer.discount / 100) * 100) / 100)).toFixed(2) }}</p>
+                                    </div>
+                                </td>
                                 <td class="border w-1/12 px-4 py-2">
                                     <input type="number" min="1" :value="amounts.get(menu.id)?.value" @input="updateAmount(menu.id, parseInt(($event.target as HTMLInputElement).value))" class="p-1 border-2 border-gray-300 rounded-md focus:outline-none focus:border-blue-500" />
                                 </td>
@@ -225,13 +245,22 @@ defineExpose({ menus: state.menus, query, amounts, search, groupedMenus, updateA
                             <th class="text-left px-4 py-2">Remark</th>
                             <th class="text-left px-4 py-2">Addition</th>
                             <th class="text-left px-4 py-2">Amount</th>
+                            <th class="text-left px-4 py-2">Total Price</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-for="sale in menuSales" :key="sale.menuId">
                             <td class="border w-1/12 px-4 py-2">{{ sale.menuId }}</td>
-                            <td class="border w-1/6 px-4 py-2">{{ menus && menus.find(menu => menu.id === sale.menuId)?.name }}</td>
-                            <td class="border w-1/6 px-4 py-2">{{ menus && menus.find(menu => menu.id === sale.menuId)?.price }}</td>
+                            <td class="border w-1/6 px-4 py-2">{{ menus?.find(menu => menu.id === sale.menuId)?.name }}</td>
+                            <td class="border w-1/6 px-4 py-2">
+                                <p v-if="(menus?.find(menu => menu.id === sale.menuId)?.menu_offers?.length ?? 0) > 0">
+                                    <span class="line-through text-red-500">€ {{ menus?.find(menu => menu.id === sale.menuId)?.price }}</span>
+                                    <div v-for="offer in menus?.find(menu => menu.id === sale.menuId)?.menu_offers" :key="offer.id" class="flex justify-end">
+                                        <p class="text-green-500">{{ roundToNearestFiveCents((Math.round((menus?.find(menu => menu.id === sale.menuId)?.price ?? 0) * (1 - offer.discount / 100) * 100) / 100)).toFixed(2) }}</p>
+                                    </div>
+                                </p>
+                                <p v-else>€ {{ menus?.find(menu => menu.id === sale.menuId)?.price }}</p>
+                            </td>
                             <td class="border w-1/6 px-4 py-2">
                                 <input type="text" v-model="sale.remark" class="p-1 border-2 border-gray-300 rounded-md focus:outline-none focus:border-blue-500" />
                             </td>
@@ -243,6 +272,14 @@ defineExpose({ menus: state.menus, query, amounts, search, groupedMenus, updateA
                                 </select>
                             </td>
                             <td class="border w-1/6 px-4 py-2">{{ sale.amount }}</td>
+                            <td class="border w-1/6 px-4 py-2">
+                                <p v-if="(menus?.find(menu => menu.id === sale.menuId)?.menu_offers?.length ?? 0) > 0">
+                                    € {{ roundToNearestFiveCents((Math.round((menus?.find(menu => menu.id === sale.menuId)?.price ?? 0) * (1 - (menus?.find(menu => menu.id === sale.menuId)?.menu_offers[0]?.discount ?? 0) / 100) * sale.amount * 100) / 100)).toFixed(2) }}
+                                </p>
+                                <p v-else>
+                                    € {{ roundToNearestFiveCents(((menus?.find(menu => menu.id === sale.menuId)?.price ?? 0) * sale.amount * 100 / 100)).toFixed(2) }}
+                                </p>
+                            </td>
                             <td class="border w-1/12 px-4 py-2">
                                 <button @click="deleteSale(sale)" class="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-700">Remove</button>
                             </td>

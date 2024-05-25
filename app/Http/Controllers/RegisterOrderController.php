@@ -14,7 +14,16 @@ class RegisterOrderController extends Controller{
 
     public function index()
     {
-        $menus = Menu::with('mealType')->where('is_archived', false)->get();
+        $now = now();
+        $startOfThisWeek = $now->startOfWeek()->startOfDay();
+        $endOfThisWeek = $now->copy()->endOfWeek();
+
+        $menus = Menu::with(['mealType', 'menuOffers' => function ($query) use ($startOfThisWeek, $endOfThisWeek) {
+            $query->whereBetween('end_date', [$startOfThisWeek, $endOfThisWeek]);
+        }])
+        ->where('is_archived', false)
+        ->get();
+
         $mealAdditions = MealAddition::get();
         return Inertia::render('Auth/Register/Menu/Menu', [
             'menus' => $menus,
