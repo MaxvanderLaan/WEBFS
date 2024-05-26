@@ -9,6 +9,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterMenuOfferController;
 use App\Http\Controllers\RegisterOrderController;
 use App\Http\Controllers\TableController;
+use App\Http\Controllers\TabletOrderController;
 use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -36,6 +37,10 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
+    Route::get('/tablet/order', [TabletOrderController::class, 'index'])->name('tablet.order');
+    Route::get('/tablet/order/create', [TabletOrderController::class, 'create'])->name('tablet.order.create');
+    Route::post('/tablet/order/make', [TabletOrderController::class, 'make'])->name('tablet.order.make');
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
