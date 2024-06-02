@@ -35,7 +35,7 @@ class RegisterOrderController extends Controller{
     {
         $query = $request->get('query');
     
-        $menus = Menu::with('mealType')
+        $menus = Menu::with(['mealType', 'menuOffers'])
             ->where('is_archived', false)
             ->where(function ($q) use ($query) {
                 $q->where('name', 'LIKE', "%{$query}%")
