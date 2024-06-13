@@ -30,6 +30,7 @@ defineExpose({ tables: state.tables });
         <div class="flex mt-5">
             <div class="w-full">
                 <h2 class="text-center text-xl font-bold mb-2">Tables</h2>
+                <div v-if="state.tables.length === 0" class="text-center text-gray-500 text-xl">No tables</div>
                 <table class="table-auto w-full">
                     <thead>
                         <tr>
@@ -50,7 +51,6 @@ defineExpose({ tables: state.tables });
                     </tbody>
                 </table>
             </div>
-            <div v-if="state.tables.length === 0" class="text-center text-gray-500 text-xl">No tables</div>
         </div>
     </BackOffice>
 </template>

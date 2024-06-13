@@ -83,8 +83,8 @@ class RegisterMenuOfferController extends Controller{
                 [
                     'menu_id' => $menuOfferData['menu_id'],
                     'discount' => $menuOfferData['discount'],
-                    'start_date' => $menuOfferData['start_date'],
-                    'end_date' => $menuOfferData['end_date'],
+                    'start_date' => $nextWeekStart,
+                    'end_date' => $nextWeekEnd,
                 ]
             );
         }
