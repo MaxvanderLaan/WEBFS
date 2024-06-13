@@ -66,6 +66,11 @@ defineExpose({ asset });
                                         >
                                         {{ $t('messages.Contact') }}
                                     </Link>
+                                    <Link class="menu-button"
+                                        :href="route('takeaway')"
+                                        >
+                                        {{ $t('Takeaway') }}
+                                    </Link>
                                 </div>
                             </nav>
                         </div>
