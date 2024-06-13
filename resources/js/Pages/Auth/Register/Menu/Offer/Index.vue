@@ -79,7 +79,7 @@ let sortedAndFilteredMenuOffers = computed(() => {
         <Head title="Menu Offers" />
         <div class="bg-gray-200 p-4">
             <a :href="`/register/menu/offer/create`" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded m-4">
-                Create
+                Update
             </a>
             <div class="w-full mb-4 mt-8">
                 <label for="sort" class="block text-sm font-medium text-gray-700">Sort by</label>
