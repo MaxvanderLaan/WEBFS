@@ -19,7 +19,7 @@ class CreateMenuSalesTable extends Migration
             $table->string('remark')->nullable();
             $table->foreignId('sale_id')->constrained()->onDelete('cascade');
             $table->foreignId('menu_id')->constrained()->onDelete('cascade');
-            $table->foreignId('meal_addition_id')->constrained()->onDelete('cascade');
+            $table->foreignId('meal_addition_id')->nullable()->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }
