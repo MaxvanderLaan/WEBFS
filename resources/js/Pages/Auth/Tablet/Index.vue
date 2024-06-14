@@ -1,22 +1,30 @@
 <script setup lang="ts">
-import { defineProps } from 'vue';
+import { defineProps, ref } from 'vue';
+import { useForm } from '@inertiajs/vue3';
+import Tablet from '@/Layouts/Tablet.vue';
 
-const props = defineProps({
-    table: {
-        type: Object,
-        required: false,
-        default: null,
-    },
-});
+const navigateToCreateOrder = () => {
+    window.location.href = route('tablet.order.create');
+};
+
 </script>
 
 <template>
-    <div class="ml-3 mt-10">
-        <div v-if="table" class="mb-3">
-            <span>Table Number: {{ table.number }}</span>
+    <Tablet>
+        <div>
+            {{ $t('messages.Welcome to the Golden Dragon') }}
+            <br>
+            {{ $t('messages.Have a nice stay and enjoy your meal.') }}
+            <br>
+            {{ $t('messages.You are allowed to order up to 5 times with a period of 10 minutes in between') }}
+            <br>
+            {{ $t('messages.Order count: ') }}
+            {{ $t('messages.Count down timer: ') }}
+            <br>
+            <br>
+            <button type="button" @click="navigateToCreateOrder" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">>
+                {{ $t('messages.Create Order') }}
+            </button>
         </div>
-        <a :href="`/tablet/order/create`" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-            Create
-        </a>
-    </div>
+    </Tablet>
 </template>

@@ -12,5 +12,7 @@
     "messages.Welcome to The Golden Dragon. Click on this text to see this week's specials!": "Welcome to The Golden Dragon. Click on this text to see this week's specials!",
     "messages.Menu": "Menu",
     "messages.News": "News",
-    "messages.Contact": "Contact"
+    "messages.Contact": "Contact",
+    "messages.No reservation found": "No reservation found",
+    "messages.Welcome to the golden dragon, Tablet edition!" : "Welcome to the golden dragon, Tablet edition!"
 }

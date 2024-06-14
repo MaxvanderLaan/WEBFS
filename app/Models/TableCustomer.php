@@ -14,6 +14,8 @@ class TableCustomer extends Model
 
     protected $fillable = [
         'deluxe',
+        'customer_id',
+        'table_id',
     ];
 
     public function customer(): BelongsTo
