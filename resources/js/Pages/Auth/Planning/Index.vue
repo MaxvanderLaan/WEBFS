@@ -50,20 +50,20 @@ onMounted(() => {
     <BackOffice>
         <div class="mt-10">
             <a :href="`/admin/planning/create`" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                Create
+                {{ $t("messages.Create") }}
             </a>
         </div>
         <div class="flex mt-5">
             <div class="w-full">
-                <h2 class="text-center text-xl font-bold mb-2">Planning</h2>
-                <div v-if="state.plannings.length === 0" class="text-center text-gray-500 text-xl">No planning</div>
+                <h2 class="text-center text-xl font-bold mb-2">{{ $t("messages.Planning") }}</h2>
+                <div v-if="state.plannings.length === 0" class="text-center text-gray-500 text-xl">{{ $t("messages.No planning") }}</div>
                 <table class="table-auto w-full">
                     <thead>
                         <tr>
-                            <th class="text-left px-4 py-2">Users</th>
-                            <th class="text-left px-4 py-2">Tables</th>
-                            <th class="text-left px-4 py-2">Start Time</th>
-                            <th class="text-left px-4 py-2">End Time</th>
+                            <th class="text-left px-4 py-2">{{ $t("messages.Users") }}</th>
+                            <th class="text-left px-4 py-2">{{ $t("messages.Tables") }}</th>
+                            <th class="text-left px-4 py-2">{{ $t("messages.Start Time") }}</th>
+                            <th class="text-left px-4 py-2">{{ $t("messages.End Time") }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -80,7 +80,7 @@ onMounted(() => {
                             <td class="border w-1/12 px-4 py-2">{{ formatDate(planning.end_time) }}</td>
                             <td class="border w-1/12 px-4 py-2">
                                 <a :href="`/admin/planning/edit/${planning.id}`" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                                    Edit
+                                    {{ $t("messages.Edit") }}
                                 </a>
                             </td>
                         </tr>

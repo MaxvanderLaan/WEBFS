@@ -16,7 +16,6 @@ const state = reactive({
     tables: props.tables || [],
 });
 
-
 defineExpose({ tables: state.tables });
 </script>
 
@@ -24,18 +23,18 @@ defineExpose({ tables: state.tables });
     <BackOffice>
         <div class="mt-10">
             <a :href="`/admin/table/create`" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                Create
+                {{ $t("messages.Create") }}
             </a>
         </div>
         <div class="flex mt-5">
             <div class="w-full">
-                <h2 class="text-center text-xl font-bold mb-2">Tables</h2>
-                <div v-if="state.tables.length === 0" class="text-center text-gray-500 text-xl">No tables</div>
+                <h2 class="text-center text-xl font-bold mb-2">{{ $t("messages.Tables") }}</h2>
+                <div v-if="state.tables.length === 0" class="text-center text-gray-500 text-xl">{{ $t("messages.No tables") }}</div>
                 <table class="table-auto w-full">
                     <thead>
                         <tr>
-                            <th class="text-left px-4 py-2">Number</th>
-                            <th class="text-left px-4 py-2">isArchived</th>
+                            <th class="text-left px-4 py-2">{{ $t("messages.Number") }}</th>
+                            <th class="text-left px-4 py-2">{{ $t("messages.isArchived") }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -44,7 +43,7 @@ defineExpose({ tables: state.tables });
                             <td class="border w-1/12 px-4 py-2">{{ table.is_archived }}</td>
                             <td class="border w-1/12 px-4 py-2">
                                 <a :href="`/admin/table/edit/${table.id}`" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                                    Edit
+                                    {{ $t("messages.Edit") }}
                                 </a>
                             </td>
                         </tr>

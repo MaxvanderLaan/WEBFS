@@ -45,7 +45,7 @@ const successMessage = ref<string | null>(null);
 const errorMessage = ref<string | null>(null);
 
 const displaySuccessMessage = () => {
-    successMessage.value = 'Successfully created order!';
+    successMessage.value = "Successfully created order!";
     errorMessage.value = null;
 
     setTimeout(() => {
@@ -55,7 +55,7 @@ const displaySuccessMessage = () => {
 
 const displayErrorMessage = () => {
     successMessage.value = null;
-    errorMessage.value = 'Failed to create order!';
+    errorMessage.value = "Failed to create order!";
 
     setTimeout(() => {
         errorMessage.value = null;
@@ -201,12 +201,12 @@ defineExpose({ menus: state.menus, query, amounts, search, groupedMenus, updateA
                     <table class="table-auto w-full">
                         <thead>
                             <tr>
-                                <th class="text-left px-4 py-2">Number</th>
-                                <th class="text-left px-4 py-2">Name</th>
-                                <th class="text-left px-4 py-2">Description</th>
-                                <th class="text-left px-4 py-2">Addition</th>
-                                <th class="text-left px-4 py-2">Price</th>
-                                <th class="text-left px-4 py-2">Amount</th>
+                                <th class="text-left px-4 py-2">{{ $t("messages.Number")}}</th>
+                                <th class="text-left px-4 py-2">{{ $t("messages.Name")}}</th>
+                                <th class="text-left px-4 py-2">{{ $t("messages.Description")}}</th>
+                                <th class="text-left px-4 py-2">{{ $t("messages.Addition")}}</th>
+                                <th class="text-left px-4 py-2">{{ $t("messages.Price")}}</th>
+                                <th class="text-left px-4 py-2">{{ $t("messages.Amount")}}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -232,20 +232,20 @@ defineExpose({ menus: state.menus, query, amounts, search, groupedMenus, updateA
                         </tbody>
                     </table>
                 </div>
-                <div v-if="state.menus.length === 0" class="text-center text-gray-500 text-xl">No menus</div>
+                <div v-if="state.menus.length === 0" class="text-center text-gray-500 text-xl">{{ $t("messages.No menus")}}</div>
             </div>
             <div class="flex-1 order-1 2xl:order-2">
-                <h2 class="text-center text-xl font-bold mb-2">Menu Sales</h2>
+                <h2 class="text-center text-xl font-bold mb-2">{{ $t("messages.Menu Sales")}}</h2>
                 <table class="table-auto w-full">
                     <thead>
                         <tr>
-                            <th class="text-left px-4 py-2">Menu Number</th>
-                            <th class="text-left px-4 py-2">Menu Name</th>
-                            <th class="text-left px-4 py-2">Price</th>
-                            <th class="text-left px-4 py-2">Remark</th>
-                            <th class="text-left px-4 py-2">Addition</th>
-                            <th class="text-left px-4 py-2">Amount</th>
-                            <th class="text-left px-4 py-2">Total Price</th>
+                                <th class="text-left px-4 py-2">{{ $t("messages.Number")}}</th>
+                                <th class="text-left px-4 py-2">{{ $t("messages.Name")}}</th>
+                                <th class="text-left px-4 py-2">{{ $t("messages.Price")}}</th>
+                            <th class="text-left px-4 py-2">{{ $t("messages.Remark")}}</th>
+                                <th class="text-left px-4 py-2">{{ $t("messages.Addition")}}</th>
+                                <th class="text-left px-4 py-2">{{ $t("messages.Amount")}}</th>
+                            <th class="text-left px-4 py-2">{{ $t("messages.Total Price")}}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -281,16 +281,16 @@ defineExpose({ menus: state.menus, query, amounts, search, groupedMenus, updateA
                                 </p>
                             </td>
                             <td class="border w-1/12 px-4 py-2">
-                                <button @click="deleteSale(sale)" class="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-700">Remove</button>
+                                <button @click="deleteSale(sale)" class="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-700">{{ $t("Remove")}}</button>
                             </td>
                         </tr>
                     </tbody>
                 </table>
                 <div class="text-center text-xl mt-5">
-                    Total: €{{ roundToNearestFiveCents(total).toFixed(2) }}
+                    {{ $t("messages.Total")}}: €{{ roundToNearestFiveCents(total).toFixed(2) }}
                 </div>
                 <div class="text-center mt-5">
-                    <button @click="sendOrder" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-700">Send Order</button>
+                    <button @click="sendOrder" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-700">{{ $t("messages.Send Order")}}</button>
                 </div>
             </div>
         </div>

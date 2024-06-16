@@ -28,7 +28,7 @@ const submit = () => {
                 <div class="p-6 bg-white border-b border-gray-200">
                     <form @submit.prevent="submit">
                         <div class="mb-4">
-                            <label for="message" class="block text-sm font-medium text-gray-700">Message</label>
+                            <label for="message" class="block text-sm font-medium text-gray-700">{{ $t("messages.Message")}}</label>
                             <input
                                 type="text"
                                 id="message"

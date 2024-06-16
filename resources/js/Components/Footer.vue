@@ -7,7 +7,7 @@ import { Link } from '@inertiajs/vue3';
         <Link 
         :href="route('contact')"
         >
-        Naar Contact
+        {{ $t("messages.To Contact")}}
         </Link>
     </footer>
 </template>

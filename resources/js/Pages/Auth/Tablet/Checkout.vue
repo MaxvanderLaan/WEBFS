@@ -84,13 +84,13 @@ function roundToNearestFiveCents(number: number) {
       <table class="table-auto w-full">
         <thead>
           <tr>
-            <th class="text-left px-4 py-2">Menu Number</th>
-            <th class="text-left px-4 py-2">Menu Name</th>
-            <th class="text-left px-4 py-2">Price</th>
-            <th class="text-left px-4 py-2">Remark</th>
-            <th class="text-left px-4 py-2">Addition</th>
-            <th class="text-left px-4 py-2">Amount</th>
-            <th class="text-left px-4 py-2">Total Price</th>
+                                <th class="text-left px-4 py-2">{{ $t("messages.Number")}}</th>
+                                <th class="text-left px-4 py-2">{{ $t("messages.Name")}}</th>
+                                <th class="text-left px-4 py-2">{{ $t("messages.Price")}}</th>
+                            <th class="text-left px-4 py-2">{{ $t("messages.Remark")}}</th>
+                                <th class="text-left px-4 py-2">{{ $t("messages.Addition")}}</th>
+                                <th class="text-left px-4 py-2">{{ $t("messages.Amount")}}</th>
+                            <th class="text-left px-4 py-2">{{ $t("messages.Total Price")}}</th>
           </tr>
         </thead>
         <tbody>
