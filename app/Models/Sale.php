@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use App\Models\MenuSale;
 use Illuminate\Database\Eloquent\Model;
 
 class Sale extends Model
@@ -12,7 +12,8 @@ class Sale extends Model
     use HasFactory;
 
     protected $fillable = [
-        'description'
+        'description',
+        'table_id',
     ];
 
     public function menuSales(): HasMany
@@ -20,10 +21,16 @@ class Sale extends Model
         return $this->hasMany(MenuSale::class);
     }
 
+    public function table(): BelongsTo
+    {
+        return $this->belongsTo(Table::class);
+    }
+
     protected function casts(): array
     {
         return [
             'description' => 'string',
+            'table_id' => 'integer',
         ];
     }
 }

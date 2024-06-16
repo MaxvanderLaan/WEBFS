@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ChangeMenuController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\PlanningController;
@@ -9,6 +10,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterMenuOfferController;
 use App\Http\Controllers\RegisterOrderController;
 use App\Http\Controllers\TableController;
+use App\Http\Controllers\TabletOrderController;
 use App\Http\Controllers\TakeawayController;
 use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
@@ -35,11 +37,23 @@ Route::get('/takeaway', [TakeawayController::class, 'index'])->name('takeaway');
 Route::get('/takeaway/search', [TakeawayController::class, 'search'])->name('takeaway.search');
 Route::post('/takeaway/order', [TakeawayController::class, 'store'])->name('takeaway.order');
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
+
+    Route::post('/dashboard/complete', [DashboardController::class, 'complete'])->name('dashboard.complete');
 
 Route::middleware('auth')->group(function () {
+
+    Route::get('/tablet/start', [TabletOrderController::class, 'start'])->name('tablet.start');
+    Route::post('/tablet/register', [TabletOrderController::class, 'register'])->name('tablet.register');
+    Route::get('/tablet/create/{saleId}', [TabletOrderController::class, 'create'])->name('tablet.create');
+    Route::post('/tablet/make', [TabletOrderController::class, 'make'])->name('tablet.make');
+    Route::get('/tablet/{saleId}', [TabletOrderController::class, 'index'])->name('tablet.index');
+    Route::get('/tablet/checkout/{saleId}', [TabletOrderController::class, 'checkout'])->name('checkout');
+    Route::get('/tablet/askHelpForm/{saleId}', [TabletOrderController::class, 'askHelpForm'])->name('tablet.askHelpForm');
+    Route::post('/tablet/askHelpStore', [TabletOrderController::class, 'askHelpStore'])->name('tablet.askHelpStore');
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

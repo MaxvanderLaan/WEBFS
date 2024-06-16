@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
 import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
@@ -8,6 +8,15 @@ import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import { Link } from '@inertiajs/vue3';
 
 const showingNavigationDropdown = ref(false);
+const helpRequests = ref<any[]>([]);
+
+onMounted(() => {
+    window.Echo.channel('help-requests')
+        .listen('HelpRequestCreated', (event: any) => {
+            helpRequests.value.push(event.help);
+            alert(`New Help Request: ${event.help.message}`);
+        });
+});
 </script>
 
 <template>
@@ -46,6 +55,9 @@ const showingNavigationDropdown = ref(false);
                                 </NavLink>
                                 <NavLink :href="route('admin.planning')" :active="route().current('admin.planning')">
                                     Planning
+                                </NavLink>
+                                <NavLink :href="route('tablet.start')" :active="route().current('tablet.start')">
+                                    Tablet
                                 </NavLink>
                             </div>
                         </div>
@@ -162,6 +174,7 @@ const showingNavigationDropdown = ref(false);
             <main class="flex justify-center items-center">
                 <div class="w-11/12">
                     <slot />
+
                 </div>
             </main>
         </div>
