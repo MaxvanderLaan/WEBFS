@@ -65,7 +65,7 @@ const displayErrorMessage = () => {
 const props = defineProps({
     menus: Array as () => Menu[],
     mealAdditions: Array as () => MealAddition[],
-    saleId: Number, // Add saleId to the props
+    saleId: Number,
 });
 
 const state = reactive({

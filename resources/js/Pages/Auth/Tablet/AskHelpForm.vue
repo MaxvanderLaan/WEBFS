@@ -9,7 +9,7 @@ const props = defineProps({
 
 const form = useForm({
     message: '',
-    saleId: props.saleId, // Include saleId here
+    saleId: props.saleId,
 });
 
 const submit = () => {
