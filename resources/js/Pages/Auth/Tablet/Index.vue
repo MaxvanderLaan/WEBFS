@@ -21,6 +21,10 @@ const navigateToCheckout = () => {
   window.location.href = route('tablet.checkout', { saleId: props.saleId });
 };
 
+const navigateToAskHelpForm = () => {
+  window.location.href = route('tablet.askHelpForm', { saleId: props.saleId });
+};
+
 const calculateRemainingTime = () => {
   const now = new Date();
   const recentOrderDate = new Date(props.recentOrderTime);
@@ -97,6 +101,11 @@ onMounted(() => {
       <br>
       <button type="button" @click="navigateToCheckout" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
         {{ $t('messages.Checkout') }}
+      </button>
+            <br>
+      <br>
+            <button type="button" @click="navigateToAskHelpForm" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        {{ $t('messages.Ask help from staff') }}
       </button>
     </div>
   </Tablet>

@@ -3,11 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
+use App\Models\Help;
 use App\Models\MealAddition;
 use App\Models\Menu;
-use App\Models\MenuOffer;
-use App\Models\Planning;
-use App\Models\PlanningTable;
 use App\Models\Sale;
 use App\Models\Table;
 use App\Models\MenuSale;
@@ -15,10 +13,8 @@ use App\Models\TableCustomer;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
-
-use function Laravel\Prompts\table;
+use App\Events\HelpRequestCreated;
 
 class TabletOrderController extends Controller
 {
@@ -148,6 +144,29 @@ class TabletOrderController extends Controller
             'menus' => $menus,
             'mealAdditions' => $mealAdditions,
         ]);
+    }
+
+    public function askHelpForm(int $saleId)
+    {
+        return Inertia::render('Auth/Tablet/AskHelpForm', [
+            'saleId' => $saleId,
+        ]);
+    }
+
+    public function askHelpStore(Request $request){
+        
+        $validated = $request->validate([
+            'message' => 'required|string|max:255',
+        ]);
+        
+        $help = Help::create([
+            'message' => $validated['message'],
+            'completed' => false,
+        ]);
+
+        event(new HelpRequestCreated($help));
+    
+        return redirect()->route('tablet.index', ['saleId' => $request->saleId])->with('success', 'Help Request created successfully');
     }
 
     private function getMostRecentOrder(Collection $menu_sales)

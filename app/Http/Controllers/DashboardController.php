@@ -16,4 +16,13 @@ class DashboardController extends Controller
             'helps' => $helps,
         ]);
     }
+
+    public function complete(Request $request){
+        $help = Help::find($request->id);
+        if ($help) {
+            $help->completed = 1;
+            $help->save();
+        }
+        return redirect()->route('dashboard');
+    }
 }
