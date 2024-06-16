@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { defineProps, ref, onMounted, computed } from 'vue';
-import Tablet from '@/Layouts/Tablet.vue';
+import { defineProps, ref, onMounted, computed } from "vue";
+import Tablet from "@/Layouts/Tablet.vue";
 
 const props = defineProps({
   saleId: Number,
@@ -10,19 +10,19 @@ const props = defineProps({
   timesOrdered: Number,
 });
 
-const countdown = ref('10:00');
+const countdown = ref("10:00");
 const buttonDisabled = ref(true);
 
 const navigateToCreateOrder = () => {
-  window.location.href = route('tablet.create', { saleId: props.saleId });
+  window.location.href = route("tablet.create", { saleId: props.saleId });
 };
 
 const navigateToCheckout = () => {
-  window.location.href = route('tablet.checkout', { saleId: props.saleId });
+  window.location.href = route("checkout", { saleId: props.saleId });
 };
 
 const navigateToAskHelpForm = () => {
-  window.location.href = route('tablet.askHelpForm', { saleId: props.saleId });
+  window.location.href = route("tablet.askHelpForm", { saleId: props.saleId });
 };
 
 const calculateRemainingTime = () => {
@@ -35,9 +35,9 @@ const calculateRemainingTime = () => {
   if (timeDifference > 0) {
     const minutes = Math.floor(timeDifference / (60 * 1000));
     const seconds = Math.floor((timeDifference % (60 * 1000)) / 1000);
-    countdown.value = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+    countdown.value = `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
   } else {
-    countdown.value = '0:00';
+    countdown.value = "0:00";
     clearInterval(intervalId);
   }
 };
@@ -67,46 +67,68 @@ onMounted(() => {
 <template>
   <Tablet>
     <div>
-      <div v-if="props.success" class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 relative" role="alert">
-        <p>{{ props.success }}</p>
+      <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 py-12">
+        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+          <div class="p-6 bg-white border-b border-gray-200">
+            <div
+              v-if="props.success"
+              class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 relative"
+              role="alert"
+            >
+              <p>{{ props.success }}</p>
+            </div>
+            {{ $t("messages.Welcome to the Golden Dragon") }}
+            <br />
+            {{ $t("messages.Have a nice stay and enjoy your meal.") }}
+            <br />
+            {{
+              $t(
+                "messages.You are allowed to order up to 5 times with a period of 10 minutes in between"
+              )
+            }}
+            <br />
+            <br />
+            {{ $t("messages.You are seated at table nr: ") }} {{ props.tableId }}
+            <br />
+            {{ $t("messages.Times ordered: ") }} {{ props.timesOrdered }}
+            <br />
+            {{ $t("messages.Time before you may order again: ") }} {{ countdown }}
+            <br />
+            <br />
+            <button
+              type="button"
+              @click="navigateToCreateOrder"
+              :disabled="buttonDisabled"
+              :class="{
+                'bg-green-500 text-white': !buttonDisabled,
+                'bg-gray-500 text-white cursor-not-allowed': buttonDisabled,
+                'hover:bg-green-700': !buttonDisabled,
+              }"
+              class="font-bold py-2 px-4 rounded"
+            >
+              {{ $t("messages.Create Order") }}
+            </button>
+            <br />
+            <br />
+            <button
+              type="button"
+              @click="navigateToCheckout"
+              class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+            >
+              {{ $t("messages.Checkout") }}
+            </button>
+            <br />
+            <br />
+            <button
+              type="button"
+              @click="navigateToAskHelpForm"
+              class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            >
+              {{ $t("messages.Ask help from staff") }}
+            </button>
+          </div>
+        </div>
       </div>
-      {{ $t('messages.Welcome to the Golden Dragon') }}
-      <br>
-      {{ $t('messages.Have a nice stay and enjoy your meal.') }}
-      <br>
-      {{ $t('messages.You are allowed to order up to 5 times with a period of 10 minutes in between') }}
-      <br>
-       <br>
-      {{ $t('messages.You are seated at table nr: ') }} {{ props.tableId }}
-      <br>
-      {{ $t('messages.Times ordered: ') }} {{ props.timesOrdered }}
-      <br>
-      {{ $t('messages.Time before you may order again: ') }} {{ countdown }}
-      <br>
-      <br>
-      <button
-        type="button"
-        @click="navigateToCreateOrder"
-        :disabled="buttonDisabled"
-        :class="{
-          'bg-blue-500 text-white': !buttonDisabled,
-          'bg-gray-500 text-white cursor-not-allowed': buttonDisabled,
-          'hover:bg-blue-700': !buttonDisabled
-        }"
-        class="font-bold py-2 px-4 rounded"
-      >
-        {{ $t('messages.Create Order') }}
-      </button>
-      <br>
-      <br>
-      <button type="button" @click="navigateToCheckout" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-        {{ $t('messages.Checkout') }}
-      </button>
-            <br>
-      <br>
-            <button type="button" @click="navigateToAskHelpForm" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-        {{ $t('messages.Ask help from staff') }}
-      </button>
     </div>
   </Tablet>
 </template>

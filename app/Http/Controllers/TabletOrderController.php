@@ -20,12 +20,12 @@ class TabletOrderController extends Controller
 {
     public function start()
     {
-        $tables = Table::all();
+        $tables = Table::where('is_archived', '!=', 1)->get();
         return Inertia::render('Auth/Tablet/Start', [
             'tables' => $tables,
         ]);
     }
-
+    
     public function register(Request $request)
     {
         $rules = [
@@ -138,7 +138,15 @@ class TabletOrderController extends Controller
         $menu_sales = MenuSale::where('sale_id', $saleId)->get();
         $menus = Menu::with('mealType', 'menuOffers')->get();
         $mealAdditions = MealAddition::get();
+        $sale = Sale::where('id', $saleId)->first();
     
+        $help = Help::create([
+            'message' => "checkout for table: ".$sale->table_id,
+            'completed' => false,
+        ]);
+
+        event(new HelpRequestCreated($help));
+
         return Inertia::render('Auth/Tablet/Checkout', [
             'menuSales' => $menu_sales,
             'menus' => $menus,

@@ -76,6 +76,9 @@ function roundToNearestFiveCents(number: number) {
 
 <template>
   <Tablet>
+    <div class="max-w-9xl mx-auto sm:px-6 lg:px-8 py-12">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 bg-white border-b border-gray-200">
     <div class="flex-1 order-1 2xl:order-2">
       <h2 class="text-center text-xl font-bold mb-2">{{ $t('messages.Selected Items') }}</h2>
       <table class="table-auto w-full">
@@ -122,5 +125,8 @@ function roundToNearestFiveCents(number: number) {
         <br>
         {{ $t('messages.A waiter is on it\'s way with the bill') }}
     </div>
+        </div>
+            </div>
+                </div>
   </Tablet>
 </template>

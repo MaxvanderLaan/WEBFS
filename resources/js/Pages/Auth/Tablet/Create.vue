@@ -185,7 +185,7 @@ defineExpose({ menus: state.menus, query, amounts, search, groupedMenus, updateA
 
 <template>
     <Tablet>
-        <div v-if="successMessage" class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 relative" role="alert">
+            <div v-if="successMessage" class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 relative" role="alert">
             <p class="font-bold">Success</p>
             <p>{{ successMessage }}</p>
         </div>
@@ -193,6 +193,9 @@ defineExpose({ menus: state.menus, query, amounts, search, groupedMenus, updateA
             <p class="font-bold">Error</p>
             <p>{{ errorMessage }}</p>
         </div>
+                    <div class="max-w-9xl mx-auto sm:px-6 lg:px-8 py-12">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 bg-white border-b border-gray-200">
         <div class="flex justify-center mt-10">
             <input v-model="query" @input="search" placeholder="Search..." class="p-2 border-2 border-gray-300 rounded-md focus:outline-none focus:border-blue-500" />
         </div>
@@ -297,5 +300,8 @@ defineExpose({ menus: state.menus, query, amounts, search, groupedMenus, updateA
                 </div>
             </div>
         </div>
+                </div>
+                        </div>
+                                </div>
     </Tablet>
 </template>

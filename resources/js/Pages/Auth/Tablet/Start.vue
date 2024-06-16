@@ -50,10 +50,25 @@ const clearForm = () => {
 
 <template>
     <Tablet>
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 py-12">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 bg-white border-b border-gray-200">
         <div>
-            <b>Instructions for waiter</b>
+            <b>{{ $t('messages.Workflow explained') }}</b>
             <br>
-            Please select what table the guests are seated at.
+            {{ $t('messages.This page should only be accesed though the tablet available at the tables in the restaurant. When the customer walks into the store a waiter should bring them to a empty table. A tablet is then produced, either the waiter will bring one or one is available on the table.') }} 
+            <br>
+            {{ $t('messages.For the first step the waiter will register all customers participating in the dining experience') }}
+            <br>
+            {{ $t('messages.After the registration is finished the tablet will be handed over to the customers, who can start placing orders') }}
+            <br>
+            {{ $t('messages.When the customer has finished their dining experience they can request the bill via checkout') }}
+             <br>
+            {{ $t('messages.The asigned waiter will then come over and finish up the payment manually') }}
+            <br><br>
+            <b>{{ $t('messages.Instructions for waiter') }}</b>
+            <br>
+            {{ $t('messages.Please select what table the guests are seated at.') }}
             <br><br>
             <select v-model="form.tableId">
                 <option v-for="table in tables" :key="table.id" :value="table.id">
@@ -62,7 +77,7 @@ const clearForm = () => {
             </select>
             <div v-if="form.errors.tableId" class="text-red-500 mt-1">{{ form.errors.tableId }}</div>
             <br><br>
-            Now register all the customers that are seated around the table and will partake in the dining.
+            {{ $t('messages.Register all the customers that are seated around the table and will partake in the dining.') }}
             <br><br>
             <form @submit.prevent="register">
                 <div v-for="(customer, index) in form.customers" :key="index" class="mb-4">
@@ -94,5 +109,8 @@ const clearForm = () => {
                 </button>
             </form>
         </div>
+                </div>
+                        </div>
+                                </div>
     </Tablet>
 </template>

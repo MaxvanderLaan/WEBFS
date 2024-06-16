@@ -41,10 +41,9 @@ Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
-    Route::post('/dashboard/complete', [DashboardController::class, 'complete'])->name('dashboard.complete');
+Route::post('/dashboard/complete', [DashboardController::class, 'complete'])->name('dashboard.complete');
 
 Route::middleware('auth')->group(function () {
-
     Route::get('/tablet/start', [TabletOrderController::class, 'start'])->name('tablet.start');
     Route::post('/tablet/register', [TabletOrderController::class, 'register'])->name('tablet.register');
     Route::get('/tablet/create/{saleId}', [TabletOrderController::class, 'create'])->name('tablet.create');
@@ -66,27 +65,30 @@ Route::middleware('auth')->group(function () {
     Route::get('/register/menu/offer/create', [RegisterMenuOfferController::class, 'create'])->name('register.menu.offer.create');
     Route::post('/register/menu/offer/make', [RegisterMenuOfferController::class, 'make'])->name('register.menu.offer.make');
 
-    Route::get('/change/menu', [ChangeMenuController::class, 'index'])->name('change.menu');
-    Route::get('/change/menu/search', [ChangeMenuController::class, 'search'])->name('change.menu.search');
-    Route::get('/change/menu/create', [ChangeMenuController::class, 'create'])->name('change.menu.create');
-    Route::post('/change/menu/make', [ChangeMenuController::class, 'make'])->name('change.menu.make');
-    Route::get('/change/menu/edit/{id}', [ChangeMenuController::class, 'edit'])->name('change.menu.edit');
-    Route::put('/change/menu/update', [ChangeMenuController::class, 'update'])->name('change.menu.update');
-    Route::post('/change/menu/delete', [ChangeMenuController::class, 'delete'])->name('change.menu.delete');
+    Route::middleware(['admin'])->group(function () {
 
-    Route::get('/admin/table', [TableController::class, 'index'])->name('admin.table');
-    Route::get('/admin/table/create', [TableController::class, 'create'])->name('admin.table.create');
-    Route::post('/admin/table/make', [TableController::class, 'make'])->name('admin.table.make');
-    Route::get('/admin/table/edit/{id}', [TableController::class, 'edit'])->name('admin.table.edit');
-    Route::put('/admin/table/update', [TableController::class, 'update'])->name('admin.table.update');
-    Route::post('/admin/table/delete', [TableController::class, 'delete'])->name('admin.table.delete');
+        Route::get('/change/menu', [ChangeMenuController::class, 'index'])->name('change.menu');
+        Route::get('/change/menu/search', [ChangeMenuController::class, 'search'])->name('change.menu.search');
+        Route::get('/change/menu/create', [ChangeMenuController::class, 'create'])->name('change.menu.create');
+        Route::post('/change/menu/make', [ChangeMenuController::class, 'make'])->name('change.menu.make');
+        Route::get('/change/menu/edit/{id}', [ChangeMenuController::class, 'edit'])->name('change.menu.edit');
+        Route::put('/change/menu/update', [ChangeMenuController::class, 'update'])->name('change.menu.update');
+        Route::post('/change/menu/delete', [ChangeMenuController::class, 'delete'])->name('change.menu.delete');
 
-    Route::get('/admin/planning', [PlanningController::class, 'index'])->name('admin.planning');
-    Route::get('/admin/planning/create', [PlanningController::class, 'create'])->name('admin.planning.create');
-    Route::post('/admin/planning/make', [PlanningController::class, 'make'])->name('admin.planning.make');
-    Route::get('/admin/planning/edit/{id}', [PlanningController::class, 'edit'])->name('admin.planning.edit');
-    Route::put('/admin/planning/update', [PlanningController::class, 'update'])->name('admin.planning.update');
-    Route::post('/admin/planning/delete', [PlanningController::class, 'delete'])->name('admin.planning.delete');
+        Route::get('/admin/table', [TableController::class, 'index'])->name('admin.table');
+        Route::get('/admin/table/create', [TableController::class, 'create'])->name('admin.table.create');
+        Route::post('/admin/table/make', [TableController::class, 'make'])->name('admin.table.make');
+        Route::get('/admin/table/edit/{id}', [TableController::class, 'edit'])->name('admin.table.edit');
+        Route::put('/admin/table/update', [TableController::class, 'update'])->name('admin.table.update');
+        Route::post('/admin/table/delete', [TableController::class, 'delete'])->name('admin.table.delete');
+
+        Route::get('/admin/planning', [PlanningController::class, 'index'])->name('admin.planning');
+        Route::get('/admin/planning/create', [PlanningController::class, 'create'])->name('admin.planning.create');
+        Route::post('/admin/planning/make', [PlanningController::class, 'make'])->name('admin.planning.make');
+        Route::get('/admin/planning/edit/{id}', [PlanningController::class, 'edit'])->name('admin.planning.edit');
+        Route::put('/admin/planning/update', [PlanningController::class, 'update'])->name('admin.planning.update');
+        Route::post('/admin/planning/delete', [PlanningController::class, 'delete'])->name('admin.planning.delete');
+    });
 });
 
 Route::get('/locale/{locale}', function ($locale) {
@@ -99,4 +101,4 @@ Route::get('/locale/{locale}', function ($locale) {
     return redirect()->back();
 })->name('locale.switch');
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
