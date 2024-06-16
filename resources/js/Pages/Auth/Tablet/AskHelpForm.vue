@@ -15,7 +15,7 @@ const form = useForm({
 const submit = () => {
     form.post(route('tablet.askHelpStore'), {
         onSuccess: () => {
-            form.reset('message'); // Only reset the message field, not saleId
+            form.reset('message');
         },
     });
 };
