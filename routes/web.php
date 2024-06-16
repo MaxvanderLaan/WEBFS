@@ -37,11 +37,11 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/tablet/order', [TabletOrderController::class, 'index'])->name('tablet.order.index');
-    Route::get('/tablet/order/start', [TabletOrderController::class, 'start'])->name('tablet.order.start');
-    Route::post('/tablet/order/register', [TabletOrderController::class, 'register'])->name('tablet.order.register');
-    Route::get('/tablet/order/create', [TabletOrderController::class, 'create'])->name('tablet.order.create');
-    // Route::post('/tablet/order/make', [TabletOrderController::class, 'make'])->name('tablet.order.make');
+    Route::get('/tablet/start', [TabletOrderController::class, 'start'])->name('tablet.start');
+    Route::post('/tablet/register', [TabletOrderController::class, 'register'])->name('tablet.register');
+    Route::get('/tablet/create/{saleId}', [TabletOrderController::class, 'create'])->name('tablet.create');
+    Route::post('/tablet/make', [TabletOrderController::class, 'make'])->name('tablet.make');
+    Route::get('/tablet/{saleId}', [TabletOrderController::class, 'index'])->name('tablet.index');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

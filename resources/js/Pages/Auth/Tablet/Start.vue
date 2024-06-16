@@ -32,7 +32,7 @@ const removeCustomer = (index: number) => {
 };
 
 const register = () => {
-    form.post('/tablet/order/register', {
+    form.post('/tablet/register', {
         onSuccess: () => {
             displaySuccessMessage();
             clearForm();

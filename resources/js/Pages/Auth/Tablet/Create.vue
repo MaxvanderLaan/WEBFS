@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { defineProps, reactive, ref, computed, defineExpose } from 'vue';
-import BackOffice from '@/Layouts/AuthenticatedLayout.vue';
+import Tablet from '@/Layouts/Tablet.vue';
 import { useForm } from '@inertiajs/vue3';
 
 interface MealAddition {
@@ -65,6 +65,7 @@ const displayErrorMessage = () => {
 const props = defineProps({
     menus: Array as () => Menu[],
     mealAdditions: Array as () => MealAddition[],
+    saleId: Number, // Add saleId to the props
 });
 
 const state = reactive({
@@ -161,11 +162,13 @@ function roundToNearestFiveCents(number: number) {
 
 const form = useForm({
     menuSales: [] as MenuSale[],
+    saleId: props.saleId,
 });
 
 const sendOrder = () => {
     form.menuSales = [...menuSales];
-    form.post('/register/menu/order', {
+    form.saleId = props.saleId;
+    form.post('/tablet/make', {
         preserveScroll: true,
         onSuccess: () => {
             displaySuccessMessage();
@@ -181,7 +184,7 @@ defineExpose({ menus: state.menus, query, amounts, search, groupedMenus, updateA
 </script>
 
 <template>
-    <BackOffice>
+    <Tablet>
         <div v-if="successMessage" class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 relative" role="alert">
             <p class="font-bold">Success</p>
             <p>{{ successMessage }}</p>
@@ -235,7 +238,7 @@ defineExpose({ menus: state.menus, query, amounts, search, groupedMenus, updateA
                 <div v-if="state.menus.length === 0" class="text-center text-gray-500 text-xl">No menus</div>
             </div>
             <div class="flex-1 order-1 2xl:order-2">
-                <h2 class="text-center text-xl font-bold mb-2">Menu Sales</h2>
+                <h2 class="text-center text-xl font-bold mb-2">{{ $t('messages.Selected Items') }}</h2>
                 <table class="table-auto w-full">
                     <thead>
                         <tr>
@@ -290,9 +293,9 @@ defineExpose({ menus: state.menus, query, amounts, search, groupedMenus, updateA
                     Total: €{{ roundToNearestFiveCents(total).toFixed(2) }}
                 </div>
                 <div class="text-center mt-5">
-                    <button @click="sendOrder" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-700">Send Order</button>
+                    <button @click="sendOrder" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-700">{{ $t('messages.Place order') }}</button>
                 </div>
             </div>
         </div>
-    </BackOffice>
+    </Tablet>
 </template>
