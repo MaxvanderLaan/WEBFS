@@ -10,6 +10,8 @@ class TableHelp extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['table_id', 'help_id'];
+
     public function table(): BelongsTo
     {
         return $this->belongsTo(Table::class);

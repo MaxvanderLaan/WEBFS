@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
+import { usePage } from '@inertiajs/vue3';
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
 import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
@@ -10,11 +11,17 @@ import { Link } from '@inertiajs/vue3';
 const showingNavigationDropdown = ref(false);
 const helpRequests = ref<any[]>([]);
 
+const { props } = usePage();
+const userId = props.auth.user.id;
+
 onMounted(() => {
-    window.Echo.channel('help-requests')
-        .listen('HelpRequestCreated', (event: any) => {
-            helpRequests.value.push(event.help);
-            alert(`New Help Request: ${event.help.message}`);
+    window.Echo.channel("help-requests")
+        .listen("HelpRequestCreated", (event: any) => {
+            if (event.userId == userId) {
+                console.log("event send")
+                helpRequests.value.push(event.help);
+                alert(`New Help Request: ${event.help.message}`);
+            }
         });
 });
 </script>
@@ -30,35 +37,19 @@ onMounted(() => {
                             <!-- Logo -->
                             <div class="shrink-0 flex items-center">
                                 <Link :href="route('dashboard')">
-                                    <ApplicationLogo
-                                        class="block h-9 w-auto fill-current text-gray-800"
-                                    />
+                                    <ApplicationLogo class="block h-9 w-auto fill-current text-gray-800" />
                                 </Link>
                             </div>
 
                             <!-- Navigation Links -->
                             <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
-                                    Dashboard
-                                </NavLink>
-                                <NavLink :href="route('register.menu')" :active="route().current('register.menu')">
-                                    Register
-                                </NavLink>
-                                <NavLink :href="route('register.menu.offer')" :active="route().current('register.menu.offer')">
-                                    Offers
-                                </NavLink>
-                                <NavLink :href="route('change.menu')" :active="route().current('change.menu')">
-                                    Menu
-                                </NavLink>
-                                <NavLink :href="route('admin.table')" :active="route().current('admin.table')">
-                                    Tables
-                                </NavLink>
-                                <NavLink :href="route('admin.planning')" :active="route().current('admin.planning')">
-                                    Planning
-                                </NavLink>
-                                <NavLink :href="route('tablet.start')" :active="route().current('tablet.start')">
-                                    Tablet
-                                </NavLink>
+                                <NavLink :href="route('dashboard')" :active="route().current('dashboard')">Dashboard</NavLink>
+                                <NavLink :href="route('register.menu')" :active="route().current('register.menu')">Register</NavLink>
+                                <NavLink :href="route('register.menu.offer')" :active="route().current('register.menu.offer')">Offers</NavLink>
+                                <NavLink :href="route('change.menu')" :active="route().current('change.menu')">Menu</NavLink>
+                                <NavLink :href="route('admin.table')" :active="route().current('admin.table')">Tables</NavLink>
+                                <NavLink :href="route('admin.planning')" :active="route().current('admin.planning')">Planning</NavLink>
+                                <NavLink :href="route('tablet.start')" :active="route().current('tablet.start')">Tablet</NavLink>
                             </div>
                         </div>
 
@@ -72,17 +63,12 @@ onMounted(() => {
                                                 type="button"
                                                 class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
                                             >
-                                                {{ $page.props.auth.user.name }}
+                                                {{ props.auth.user.name }}
 
-                                                <svg
-                                                    class="ms-2 -me-0.5 h-4 w-4"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    viewBox="0 0 20 20"
-                                                    fill="currentColor"
-                                                >
+                                                <svg class="ms-2 -me-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                                                     <path
                                                         fill-rule="evenodd"
-                                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a 1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
                                                         clip-rule="evenodd"
                                                     />
                                                 </svg>
@@ -92,9 +78,7 @@ onMounted(() => {
 
                                     <template #content>
                                         <DropdownLink :href="route('profile.edit')"> Profile </DropdownLink>
-                                        <DropdownLink :href="route('logout')" method="post" as="button">
-                                            Log Out
-                                        </DropdownLink>
+                                        <DropdownLink :href="route('logout')" method="post" as="button"> Log Out </DropdownLink>
                                     </template>
                                 </Dropdown>
                             </div>
@@ -108,20 +92,14 @@ onMounted(() => {
                             >
                                 <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                                     <path
-                                        :class="{
-                                            hidden: showingNavigationDropdown,
-                                            'inline-flex': !showingNavigationDropdown,
-                                        }"
+                                        :class="{ hidden: showingNavigationDropdown, 'inline-flex': !showingNavigationDropdown }"
                                         stroke-linecap="round"
                                         stroke-linejoin="round"
                                         stroke-width="2"
                                         d="M4 6h16M4 12h16M4 18h16"
                                     />
                                     <path
-                                        :class="{
-                                            hidden: !showingNavigationDropdown,
-                                            'inline-flex': showingNavigationDropdown,
-                                        }"
+                                        :class="{ hidden: !showingNavigationDropdown, 'inline-flex': showingNavigationDropdown }"
                                         stroke-linecap="round"
                                         stroke-linejoin="round"
                                         stroke-width="2"
@@ -134,30 +112,21 @@ onMounted(() => {
                 </div>
 
                 <!-- Responsive Navigation Menu -->
-                <div
-                    :class="{ block: showingNavigationDropdown, hidden: !showingNavigationDropdown }"
-                    class="sm:hidden"
-                >
+                <div :class="{ block: showingNavigationDropdown, hidden: !showingNavigationDropdown }" class="sm:hidden">
                     <div class="pt-2 pb-3 space-y-1">
-                        <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
-                            Dashboard
-                        </ResponsiveNavLink>
+                        <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">Dashboard</ResponsiveNavLink>
                     </div>
 
                     <!-- Responsive Settings Options -->
                     <div class="pt-4 pb-1 border-t border-gray-200">
                         <div class="px-4">
-                            <div class="font-medium text-base text-gray-800">
-                                {{ $page.props.auth.user.name }}
-                            </div>
-                            <div class="font-medium text-sm text-gray-500">{{ $page.props.auth.user.email }}</div>
+                            <div class="font-medium text-base text-gray-800">{{ props.auth.user.name }}</div>
+                            <div class="font-medium text-sm text-gray-500">{{ props.auth.user.email }}</div>
                         </div>
 
                         <div class="mt-3 space-y-1">
                             <ResponsiveNavLink :href="route('profile.edit')"> Profile </ResponsiveNavLink>
-                            <ResponsiveNavLink :href="route('logout')" method="post" as="button">
-                                Log Out
-                            </ResponsiveNavLink>
+                            <ResponsiveNavLink :href="route('logout')" method="post" as="button"> Log Out </ResponsiveNavLink>
                         </div>
                     </div>
                 </div>
@@ -174,7 +143,6 @@ onMounted(() => {
             <main class="flex justify-center items-center">
                 <div class="w-11/12">
                     <slot />
-
                 </div>
             </main>
         </div>

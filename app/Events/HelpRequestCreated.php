@@ -14,15 +14,17 @@ class HelpRequestCreated implements ShouldBroadcastNow
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $help;
+    public $userId;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(Help $help)
+    public function __construct(Help $help, int $userId)
     {
         $this->help = $help;
+        $this->userId = $userId;
     }
 
     /**
@@ -33,5 +35,18 @@ class HelpRequestCreated implements ShouldBroadcastNow
     public function broadcastOn()
     {
         return new Channel('help-requests');
+    }
+
+    /**
+     * Get the data to broadcast.
+     *
+     * @return array
+     */
+    public function broadcastWith()
+    {
+        return [
+            'help' => $this->help,
+            'userId' => $this->userId,
+        ];
     }
 }

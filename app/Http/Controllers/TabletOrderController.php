@@ -15,6 +15,9 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Validator;
 use App\Events\HelpRequestCreated;
+use App\Models\Planning;
+use App\Models\PlanningTable;
+use App\Models\TableHelp;
 
 class TabletOrderController extends Controller
 {
@@ -145,7 +148,14 @@ class TabletOrderController extends Controller
             'completed' => false,
         ]);
 
-        event(new HelpRequestCreated($help));
+        $tableHelp = TableHelp::create([
+            'table_id' => $sale->table_id,
+            'help_id' => $help->id,
+        ]);
+        dd($tableHelp);
+
+        $waiter_id = 1;
+        event(new HelpRequestCreated($help, $waiter_id));
 
         return Inertia::render('Auth/Tablet/Checkout', [
             'menuSales' => $menu_sales,
@@ -162,20 +172,31 @@ class TabletOrderController extends Controller
     }
 
     public function askHelpStore(Request $request){
-        
+        $sale = Sale::where('id', $request->saleId)->first();
+
         $validated = $request->validate([
             'message' => 'required|string|max:255',
         ]);
-        
+    
         $help = Help::create([
             'message' => $validated['message'],
             'completed' => false,
         ]);
-
-        event(new HelpRequestCreated($help));
+    
+        $tableHelp = TableHelp::create([
+            'table_id' => $sale->table_id,
+            'help_id' => $help->id,
+        ]);
+    
+        $table = Table::where('id', $sale->table_id)->first();
+        $planningsTable = PlanningTable::where('table_id', $table->id)->first();
+        $planning = Planning::where('id', $planningsTable->planning_id)->first();;
+    
+        event(new HelpRequestCreated($help, $planning->user_id));
     
         return redirect()->route('tablet.index', ['saleId' => $request->saleId])->with('success', 'Help Request created successfully');
     }
+    
 
     private function getMostRecentOrder(Collection $menu_sales)
     {

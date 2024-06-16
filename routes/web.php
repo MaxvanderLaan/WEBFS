@@ -66,7 +66,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/register/menu/offer/make', [RegisterMenuOfferController::class, 'make'])->name('register.menu.offer.make');
 
     Route::middleware(['admin'])->group(function () {
-
         Route::get('/change/menu', [ChangeMenuController::class, 'index'])->name('change.menu');
         Route::get('/change/menu/search', [ChangeMenuController::class, 'search'])->name('change.menu.search');
         Route::get('/change/menu/create', [ChangeMenuController::class, 'create'])->name('change.menu.create');
