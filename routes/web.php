@@ -11,6 +11,7 @@ use App\Http\Controllers\RegisterMenuOfferController;
 use App\Http\Controllers\RegisterOrderController;
 use App\Http\Controllers\TableController;
 use App\Http\Controllers\TabletOrderController;
+use App\Http\Controllers\TakeawayController;
 use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -32,6 +33,9 @@ Route::get('/get-session-message', function () {
 Route::get('/menu', [MenuController::class, 'index'])->name('menu');
 Route::get('/news', [NewsController::class, 'index'])->name('news');
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
+Route::get('/takeaway', [TakeawayController::class, 'index'])->name('takeaway');
+Route::get('/takeaway/search', [TakeawayController::class, 'search'])->name('takeaway.search');
+Route::post('/takeaway/order', [TakeawayController::class, 'store'])->name('takeaway.order');
 
 Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
