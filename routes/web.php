@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ChangeMenuController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\PlanningController;
@@ -32,9 +33,9 @@ Route::get('/menu', [MenuController::class, 'index'])->name('menu');
 Route::get('/news', [NewsController::class, 'index'])->name('news');
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/tablet/start', [TabletOrderController::class, 'start'])->name('tablet.start');
@@ -42,6 +43,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/tablet/create/{saleId}', [TabletOrderController::class, 'create'])->name('tablet.create');
     Route::post('/tablet/make', [TabletOrderController::class, 'make'])->name('tablet.make');
     Route::get('/tablet/{saleId}', [TabletOrderController::class, 'index'])->name('tablet.index');
+    Route::get('/tablet/checkout/{saleId}', [TabletOrderController::class, 'checkout'])->name('checkout');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

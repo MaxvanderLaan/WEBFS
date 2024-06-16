@@ -31,6 +31,11 @@ class Table extends Model
         return $this->hasMany(PlanningTable::class);
     }
 
+    public function sales(): HasMany
+    {
+        return $this->hasMany(Sale::class);
+    }
+
     protected function casts(): array
     {
         return [

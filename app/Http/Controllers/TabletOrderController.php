@@ -66,8 +66,8 @@ class TabletOrderController extends Controller
 
         $sale = Sale::create([
             'description' => 'sale for table ' . $tableId,
+            'table_id' => $tableId,
         ]);
-
         return redirect()->route('tablet.index', ['saleId' => $sale->id]);
     }
 
@@ -75,15 +75,18 @@ class TabletOrderController extends Controller
     {
         $menu_sales = MenuSale::where('sale_id', $saleId)->get();
         $recentOrderTime = $this->getMostRecentOrder($menu_sales);
+        $timesOrdered = $this->getTimesOrdered($menu_sales);
+        $sale = Sale::where('id', $saleId)->first();
 
         return Inertia::render('Auth/Tablet/Index', [
             'saleId' => $saleId,
             'success' => session('success'),
-            'recentOrderTime' => $recentOrderTime
+            'tableId' => $sale->table_id,
+            'recentOrderTime' => $recentOrderTime ? $recentOrderTime->toIso8601String() : null,
+            'timesOrdered' => $timesOrdered,
         ]);
-        //recent time
     }
-
+    
     public function create(int $saleId)
     {
         $now = now();
@@ -134,22 +137,36 @@ class TabletOrderController extends Controller
         }
     }
 
+    public function checkout(int $saleId)
+    {
+        $menu_sales = MenuSale::where('sale_id', $saleId)->get();
+        $menus = Menu::with('mealType', 'menuOffers')->get();
+        $mealAdditions = MealAddition::get();
+    
+        return Inertia::render('Auth/Tablet/Checkout', [
+            'menuSales' => $menu_sales,
+            'menus' => $menus,
+            'mealAdditions' => $mealAdditions,
+        ]);
+    }
+
     private function getMostRecentOrder(Collection $menu_sales)
     {
-        $now = Carbon::now();
         $closestTime = null;
-        $smallestDifference = null;
     
         foreach ($menu_sales as $menu_sale) {
             $createdAt = $menu_sale->created_at;
-            $difference = $now->diffInSeconds($createdAt);
     
-            if (is_null($closestTime) || $difference < $smallestDifference) {
-                $smallestDifference = $difference;
+            if (is_null($closestTime) || $createdAt > $closestTime) {
                 $closestTime = $createdAt;
             }
         }
     
         return $closestTime;
+    }
+
+    private function getTimesOrdered(Collection $menu_sales){
+        $uniqueTimestamps = $menu_sales->pluck('created_at')->unique();
+        return $uniqueTimestamps->count();
     }
 }
