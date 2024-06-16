@@ -1,7 +1,9 @@
 <template>
   <div>
-    <a :href="localeUrls.en">English</a>
-    <a :href="localeUrls.nl">Dutch</a>
+    <span>
+      <a :href="localeUrls.en">{{ $t('messages.English') }}</a>
+      <span> / </span>
+      <a :href="localeUrls.nl">{{ $t('messages.Dutch') }}</a></span>
   </div>
 </template>
 
@@ -10,10 +12,10 @@ export default {
   data() {
     return {
       localeUrls: window.localeUrls || {
-        en: '/locale/en',
-        nl: '/locale/nl',
-      }
+        en: "/locale/en",
+        nl: "/locale/nl",
+      },
     };
-  }
-}
+  },
+};
 </script>

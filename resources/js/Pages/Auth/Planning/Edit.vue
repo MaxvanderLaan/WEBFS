@@ -38,7 +38,7 @@ const minDateTime = ref(today.toISOString().split('T')[0]);
 const maxDateTime = ref(oneWeekFromNow.toISOString().split('T')[0]);
 
 const displaySuccessMessage = () => {
-    successMessage.value = 'Table updated successfully!';
+    successMessage.value = $t('messages.Table updated successfully');
     errorMessage.value = null;
 
     setTimeout(() => {
@@ -48,7 +48,7 @@ const displaySuccessMessage = () => {
 
 const displayErrorMessage = () => {
     successMessage.value = null;
-    errorMessage.value = 'Failed to update table!';
+    errorMessage.value = $t('messages.Failed to update table');
 
     setTimeout(() => {
         errorMessage.value = null;
@@ -92,14 +92,14 @@ const deleteForm = useForm({ id: props.planning.id });
 <template>
     <BackOffice>
         <a :href="`/admin/planning`" class="text-blue-500 font-bold py-2">
-            Back
+            {{ $t("messages.Back") }}
         </a>
         <div v-if="successMessage" class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 relative" role="alert">
-            <p class="font-bold">Success</p>
+            <p class="font-bold">{{ $t("messages.Success") }}</p>
             <p>{{ successMessage }}</p>
         </div>
         <div v-if="errorMessage" class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 relative" role="alert">
-            <p class="font-bold">Error</p>
+            <p class="font-bold">{{ $t("messages.Error") }}</p>
             <p>{{ errorMessage }}</p>
         </div>
 
@@ -113,67 +113,65 @@ const deleteForm = useForm({ id: props.planning.id });
             <div class="flex flex-col space-y-4">
 
                 <div>
-                    <label for="start_date" class="block text-sm font-medium text-gray-700">Start Date</label>
+                    <label for="start_date" class="block text-sm font-medium text-gray-700">{{ $t("messages.Start Date") }}</label>
                     <p class="text-red-500 text-xs italic" v-if="props.errors?.start_date">{{ props.errors?.start_date }}</p>
                     <input id="start_date" type="date" v-model="form.start_date" :min="minDateTime" :max="maxDateTime" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
                 </div>
 
                 <div>
-                    <label for="start_time" class="block text-sm font-medium text-gray-700">Start Time</label>
+                    <label for="start_time" class="block text-sm font-medium text-gray-700">{{ $t("messages.Start Time") }}</label>
                     <p class="text-red-500 text-xs italic" v-if="props.errors?.start_time">{{ props.errors?.start_time }}</p>
                     <input id="start_time" type="time" v-model="form.start_time" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
                 </div>
 
                 <div>
-                    <label for="end_date" class="block text-sm font-medium text-gray-700">End Date</label>
+                    <label for="end_date" class="block text-sm font-medium text-gray-700">{{ $t("messages.End Date") }}</label>
                     <p class="text-red-500 text-xs italic" v-if="props.errors?.end_date">{{ props.errors?.end_date }}</p>
                     <input id="end_date" type="date" v-model="form.end_date" :min="minDateTime" :max="maxDateTime" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
                 </div>
 
                 <div>
-                    <label for="end_time" class="block text-sm font-medium text-gray-700">End Time</label>
+                    <label for="end_time" class="block text-sm font-medium text-gray-700">{{ $t("messages.End Time") }}</label>
                     <p class="text-red-500 text-xs italic" v-if="props.errors?.end_time">{{ props.errors?.end_time }}</p>
                     <input id="end_time" type="time" v-model="form.end_time" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
                 </div>
 
                 <div>
-                    <label for="user" class="block text-sm font-medium text-gray-700">User</label>
+                    <label for="user" class="block text-sm font-medium text-gray-700">{{ $t("messages.User") }}</label>
                     <p class="text-red-500 text-xs italic" v-if="props.errors?.user_id">{{ props.errors?.user_id }}</p>
                     <select id="user" v-model="form.user_id" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                        <option :value="null">Select an user</option>
+                        <option :value="null">{{ $t("messages.Select a user") }}</option>
                         <option v-for="user in props.users" :key="user.id" :value="user.id">{{ user.name }}</option>
                     </select>
                 </div>
 
                 <div>
-                    <label for="table" class="block text-sm font-medium text-gray-700">Table</label>
+                    <label for="table" class="block text-sm font-medium text-gray-700">{{ $t("messages.Table") }}</label>
                     <p class="text-red-500 text-xs italic" v-if="props.errors?.table_ids">{{ props.errors?.table_ids }}</p>
                     <select id="table" v-model="selectedTable" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                        <option :value="null">Select a table</option>
+                        <option :value="null">{{ $t("messages.Select a table") }}</option>
                         <option v-for="table in props.tables" :key="table.id" :value="table.id">{{ table.number }}</option>
                     </select>
-                    <button type="button" @click="addTable" class="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Add Table</button>
+                    <button type="button" @click="addTable" class="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">{{ $t("messages.Add Table") }}</button>
                 </div>
 
                 <div>
-                    <h2 class="text-2xl font-semibold text-blue-700">Selected Tables:</h2>
+                    <h2 class="text-2xl font-semibold text-blue-700">{{ $t("messages.Selected Tables:") }}</h2>
                     <ul>
                         <li v-for="id in form.table_ids" :key="id">
-                            Table {{ props.tables.find(table => table.id === id)?.number }}
-                            <button type="button" @click="removeTable(id)" class="ml-2 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 mt-1 rounded">Remove</button>
+                            {{ $t("messages.Table") }} {{ props.tables.find(table => table.id === id)?.number }}
+                            <button type="button" @click="removeTable(id)" class="ml-2 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 mt-1 rounded">{{ $t("messages.Remove") }}</button>
                         </li>
-                        <li v-if="form.table_ids.length === 0">No tables selected</li>
+                        <li v-if="form.table_ids.length === 0">{{ $t("messages.No tables selected") }}</li>
                     </ul>
                 </div>
 
                 <div class="flex justify-between">
-                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">Update</button>
-                <form @submit.prevent="deleteForm.submit('post', `/admin/planning/delete`)">
-                    <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-4">
-                        Delete
-                    </button>
-                </form>
-            </div>
+                    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">{{ $t("messages.Update") }}</button>
+                    <form @submit.prevent="deleteForm.submit('post', `/admin/planning/delete`)">
+                        <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-4">{{ $t("messages.Delete") }}</button>
+                    </form>
+                </div>
             </div>
         </form>
     </BackOffice>

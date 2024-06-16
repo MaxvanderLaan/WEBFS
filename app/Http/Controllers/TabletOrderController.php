@@ -130,9 +130,9 @@ class TabletOrderController extends Controller
             }
     
             return redirect()->route('tablet.index', ['saleId' => $sale->id])
-                             ->with('success', 'Order created successfully');
+                             ->with('success', __('Order created successfully'));
         } catch (\Exception $e) {
-            return back()->with('error', 'Failed to create order: ' . $e->getMessage());
+            return back()->with('error', __('messages.Failed to create order: )' . $e->getMessage()));
         }
     }
 
@@ -152,7 +152,6 @@ class TabletOrderController extends Controller
             'table_id' => $sale->table_id,
             'help_id' => $help->id,
         ]);
-        dd($tableHelp);
 
         $waiter_id = 1;
         event(new HelpRequestCreated($help, $waiter_id));
@@ -194,7 +193,7 @@ class TabletOrderController extends Controller
     
         event(new HelpRequestCreated($help, $planning->user_id));
     
-        return redirect()->route('tablet.index', ['saleId' => $request->saleId])->with('success', 'Help Request created successfully');
+        return redirect()->route('tablet.index', ['saleId' => $request->saleId])->with('success', __('messages.Help Request created successfully'));
     }
     
 

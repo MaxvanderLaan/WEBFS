@@ -202,11 +202,11 @@ const search = () => {
                     <table class="table-auto w-full">
                         <thead>
                             <tr>
-                                <th class="text-left px-4 py-2">Number</th>
-                                <th class="text-left px-4 py-2">Name</th>
-                                <th class="text-left px-4 py-2">Description</th>
-                                <th class="text-left px-4 py-2">Addition</th>
-                                <th class="text-left px-4 py-2">Price</th>
+                                <th class="text-left px-4 py-2">{{ $t("messages.Number") }}</th>
+                                <th class="text-left px-4 py-2">{{ $t("messages.Name") }}</th>
+                                <th class="text-left px-4 py-2">{{ $t("messages.Description")}}</th>
+                                <th class="text-left px-4 py-2">{{ $t("messages.Addition") }}</th>
+                                <th class="text-left px-4 py-2">{{ $t("messages.Price") }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -223,18 +223,18 @@ const search = () => {
                         </tbody>
                     </table>
                 </div>
-                <div v-if="state.menus.length === 0" class="text-center text-gray-500 text-xl">No menus</div>
+                <div v-if="state.menus.length === 0" class="text-center text-gray-500 text-xl">{{ $t("messages.menus")}}</div>
             </div>
             <div class="flex-1 order-1 xl:order-2">
-                <h2 class="text-center text-xl font-bold mb-2">Menu Offers</h2>
+                <h2 class="text-center text-xl font-bold mb-2">{{ $t("Menu Offers")}}</h2>
                 <table class="table-auto w-full">
                     <thead>
                         <tr>
-                            <th class="text-left px-4 py-2">Number</th>
-                            <th class="text-left px-4 py-2">Menu Name</th>
-                            <th class="text-left px-4 py-2">Discount Percentage</th>
-                            <th class="text-left px-4 py-2">Start Date</th>
-                            <th class="text-left px-4 py-2">End Date</th>
+                            <th class="text-left px-4 py-2">{{ $t("messages.Number") }}</th>
+                            <th class="text-left px-4 py-2">{{ $t("messages.Menu Name")}}</th>
+                            <th class="text-left px-4 py-2">{{ $t("messages.Discount Percentage")}}</th>
+                            <th class="text-left px-4 py-2">{{ $t("messages.Start Date") }}</th>
+                            <th class="text-left px-4 py-2">{{ $t("messages.End Date") }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -251,13 +251,13 @@ const search = () => {
                                 <input type="text" :value="formatDate(menuOffer.end_date)" readonly class="p-1 border-2 border-gray-300 rounded-md focus:outline-none focus:border-blue-500" />
                             </td>
                             <td class="border w-1/12 px-4 py-2">
-                                <button @click="deleteMenu(menuOffer)" class="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-700">Remove</button>
+                                <button @click="deleteMenu(menuOffer)" class="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-700">{{ $t("messages.Remove")}}</button>
                             </td>
                         </tr>
                     </tbody>
                 </table>
                 <div class="text-center mt-5">
-                    <button @click="sendOffer()" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-700">Update Offer</button>
+                    <button @click="sendOffer()" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-700">{{ $t("messages.Update Offer")}}</button>
                 </div>
             </div>
         </div>
