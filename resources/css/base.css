@@ -63,46 +63,55 @@
     font-style: normal;
 }
 
+.margin-left-dragon {
+    margin-left: 7%;
+}
+
+.margin-right-dragon {
+    margin-right: 7%;
+}
+
 .scroll-container {
+    display: flex; /* Add this to enable Flexbox */
     flex: 1;
-    align-items: center;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
     overflow: hidden;
 }
   
 .scroll-text {
     color: yellow;
     white-space: nowrap;
+    font-weight: bold;
 
     -moz-transform: translateX(100%);
     -webkit-transform: translateX(100%);
     transform: translateX(100%);
     
-    -moz-animation: my-animation 15s linear infinite;
-    -webkit-animation: my-animation 15s linear infinite;
-    animation: my-animation 15s linear infinite;
+    -moz-animation: my-animation 30s linear infinite;
+    -webkit-animation: my-animation 30s linear infinite;
+    animation: my-animation 30s linear infinite;
 }
   
-/* for Firefox */
 @-moz-keyframes my-animation {
-    from { -moz-transform: translateX(100%); }
-    to { -moz-transform: translateX(-100%); }
+    from { -moz-transform: translateX(calc(100% + 20vw)); }
+    to { -moz-transform: translateX(calc(-100% - 20vw)); }
 }
   
-/* for Chrome */
 @-webkit-keyframes my-animation {
-    from { -webkit-transform: translateX(100%); }
-    to { -webkit-transform: translateX(-100%); }
+    from { -webkit-transform: translateX(calc(100% + 20vw)); }
+    to { -webkit-transform: translateX(calc(-100% - 20vw)); }
 }
   
 @keyframes my-animation {
     from {
-        -moz-transform: translateX(100%);
-        -webkit-transform: translateX(100%);
-        transform: translateX(100%);
+        -moz-transform: translateX(calc(100% + 20vw));
+        -webkit-transform: translateX(calc(100% + 20vw));
+        transform: translateX(calc(100% + 20vw));
     }
     to {
-        -moz-transform: translateX(-100%);
-        -webkit-transform: translateX(-100%);
-        transform: translateX(-100%);
+        -moz-transform: translateX(calc(-100% - 20vw));
+        -webkit-transform: translateX(calc(-100% - 20vw));
+        transform: translateX(calc(-100% - 20vw));
     }
 }
