@@ -38,7 +38,7 @@ const minDateTime = ref(today.toISOString().split('T')[0]);
 const maxDateTime = ref(oneWeekFromNow.toISOString().split('T')[0]);
 
 const displaySuccessMessage = () => {
-    successMessage.value = $t('messages.Table updated successfully');
+    successMessage.value = 'Table updated successfully';
     errorMessage.value = null;
 
     setTimeout(() => {
@@ -48,7 +48,7 @@ const displaySuccessMessage = () => {
 
 const displayErrorMessage = () => {
     successMessage.value = null;
-    errorMessage.value = $t('messages.Failed to update table');
+    errorMessage.value = 'Failed to update table';
 
     setTimeout(() => {
         errorMessage.value = null;

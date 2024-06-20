@@ -7,7 +7,7 @@ const successMessage = ref<string | null>(null);
 const errorMessage = ref<string | null>(null);
 
 const displaySuccessMessage = () => {
-    successMessage.value = $t('messages.Table created successfully');
+    successMessage.value = 'Table created successfully';
     errorMessage.value = null;
 
     setTimeout(() => {
@@ -17,7 +17,7 @@ const displaySuccessMessage = () => {
 
 const displayErrorMessage = () => {
     successMessage.value = null;
-    errorMessage.value = $t('messages.Failed to create table');
+    errorMessage.value = 'Failed to create table';
 
     setTimeout(() => {
         errorMessage.value = null;

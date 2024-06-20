@@ -12,7 +12,7 @@ const successMessage = ref<string | null>(null);
 const errorMessage = ref<string | null>(null);
 
 const displaySuccessMessage = () => {
-    successMessage.value = $t('messages.Menu created successfully', { name: form.name });
+    successMessage.value = 'Menu created successfully', { name: form.name };
     errorMessage.value = null;
 
     setTimeout(() => {
@@ -22,7 +22,7 @@ const displaySuccessMessage = () => {
 
 const displayErrorMessage = () => {
     successMessage.value = null;
-    errorMessage.value = $t('messages.Failed to update menu');
+    errorMessage.value = 'Failed to update menu';
 
     setTimeout(() => {
         errorMessage.value = null;
