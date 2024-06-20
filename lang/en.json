@@ -143,6 +143,8 @@
     "messages.You can still pick up your favorite dishes." : "You can still pick up your favorite dishes.",
     "messages.The Golden Dragon is easy to find, near the city center, a 5-minute walk behind the central station." : "The Golden Dragon is easy to find, near the city center, a 5-minute walk behind the central station.",
     "messages.Education Boulevard 215, room OG112" : "Onderwijsboulevard 215, kamer OG112",
-    "messages.5223 DE 's-Hertogenbosch" : "5223 DE 's-Hertogenbosch"
+    "messages.5223 DE 's-Hertogenbosch" : "5223 DE 's-Hertogenbosch",
+    "messages.Completed: " : "Completed: ",
+    "messages.Loading..." : "Loading..."
     
 }

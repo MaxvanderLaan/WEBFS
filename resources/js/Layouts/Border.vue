@@ -124,4 +124,5 @@ const asset = (path: any) => `/storage/${path}`;
 			</table>
 		</div>
 	</div>
+
 </template>

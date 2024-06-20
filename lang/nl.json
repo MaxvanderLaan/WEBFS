@@ -144,5 +144,7 @@
 
     "messages.The Golden Dragon is easy to find, near the city center, a 5-minute walk behind the central station." : "De Gouden Draak is eenvoudig te vinden, vlak bij het centrum, 5 minuten lopen achter het centraal station.",
     "messages.Education Boulevard 215, room OG112" : "Onderwijsboulevard 215, kamer OG112",
-    "messages.5223 DE 's-Hertogenbosch" : "5223 DE 's-Hertogenbosch"
+    "messages.5223 DE 's-Hertogenbosch" : "5223 DE 's-Hertogenbosch",
+    "messages.Completed: " : "Voltooid: ",
+        "messages.Loading..." : "Laden..."
 }
